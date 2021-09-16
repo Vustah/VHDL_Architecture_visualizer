@@ -5,6 +5,7 @@ class Process:
         self.sensitivity_list = []
         self.internal_variables = {}
         self.assigned_signals = {}
+        self.input_signal = []
 
     def set_sensitivity_signal(self, signal):
         self.sensitivity_list.append(signal)
@@ -41,6 +42,9 @@ class Process:
 
     def get_assigned_signals(self):
         return self.assigned_signals
+
+    def set_input_signals(self, signal):
+      self.input_signal.append(signal)
 
     def get_process_name(self):
         return self.process_name

@@ -43,17 +43,20 @@ def draw_diagram(diagram_name, blocks, wires):
     block_list = []
     for block in blocks:
       if not isinstance(block,Block):
-        break
+        return 1
       block_list.append(Action(block.get_name()))
     
     for idx, block in enumerate(blocks): 
       if not isinstance(block,Block):
-        break
+        return 1
       for signal in block.get_input_signals():
+        
         for jdx, another_block in enumerate(blocks):
+          
           if signal in another_block.get_output_signals():
             block_list[jdx] >> block_list[idx]
-        
+  
+  return 0      
 
     
 def main():

@@ -5,7 +5,7 @@ from Entity import Entity
 from Process import Process
 from Procedure import Procedure
 from Component import Component
-
+from Block_drawing import Block, Wire, draw_diagram
 
 def find_path(filename):
     path_end = filename.rfind("/")
@@ -26,6 +26,20 @@ def importfile(filename):
         infile_content.append(line)
     return infile_content, path
 
+def sort_system(entity, processes):
+  block_list = []
+  for process in processes:
+    if not isinstance(process, Process):
+      return 1
+    tmp_block = Block(process.get_process_name())
+    for signal in process.get_assigned_signals():
+      value = process.get_assigned_signals()[signal]
+      tmp_block.set_output_signal(signal)
+      for spesific_value in value:
+        tmp_block.set_input_signal(spesific_value)
+    block_list.append(tmp_block)
+    
+  return block_list
 
 def find_entity_with_signals(content):
     entity = None
@@ -205,6 +219,11 @@ def main(filename):
     entity = find_internal_signals(file_content,entity)
     processes = find_processes(file_content)
     print_all(entity,processes)
+    block_list = sort_system(entity,processes)
+    if block_list != 1:
+      draw_diagram(entity.get_name(),block_list,None)
+    else: 
+      return 1
     return 0
 
 

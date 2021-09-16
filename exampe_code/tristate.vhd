@@ -35,7 +35,8 @@ begin
     end procedure;
   begin
     if rst = '1' then
-      local_signal <= '0';
+      local_signal <= d_out;
+
     end if;
   end process;
 
