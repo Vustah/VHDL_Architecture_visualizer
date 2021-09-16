@@ -38,23 +38,21 @@ def find_entity_with_signals(content):
             entity_name = line.split(" ")[1]
             entity = Entity(entity_name)            
             inside_entity_declaration = True
-            # entity["name"] = entity_name
-            # entity["IN"] = {}
-            # entity["OUT"] = {}
+            
 
         if " in " in line and inside_entity_declaration:
             line = line.replace("port(", "")
             signal_name = line.split(" in ")[0].replace(":", "").replace(" ", "")
             signal_type = line.split(" in ")[1].replace(":", "")
             entity.set_input_signals(input_signal_name=signal_name,input_signal_type=signal_type)
-            # entity["IN"][signal_name] = signal_type
+            
 
         if " out " in line and inside_entity_declaration:
             line = line.replace("port(", "")
             signal_name = line.split(" out ")[0].replace(":", "").replace(" ", "")
             signal_type = line.split(" out ")[1].replace(":", "")
             entity.set_output_signals(output_signal_name=signal_name,output_signal_type=signal_type)
-            # entity["OUT"][signal_name] = signal_type
+            
 
         if ("end " + entity_name) in line:
             inside_entity_declaration = False
@@ -65,9 +63,10 @@ def find_internal_signals(content,entity = None):
     if entity == None:
         entity = find_entity_with_signals(content)
     for line in content:
-        if "signal " in line:
+        if " signal " in line:
+            
             signal_declaration = line.split(": ")
-            signal_name = signal_declaration[0].split("signal ")[1].replace(" ","")
+            signal_name = signal_declaration[0].split(" signal ")[1].replace(" ","")
             signal_type = signal_declaration[1].split(":=")
             signal_value = None
             if len(signal_type) > 1:
@@ -94,7 +93,7 @@ def find_processes(content):
         if current_process == None:
             process_started = False
 
-        if "process" in line and "end" not in line:
+        if " process " in line and "end" not in line:
             end_process_name = line.index(":")
             process_name = line[0:end_process_name].replace(" ", "").replace("\t", "")
             current_process = Process(process_name)
@@ -103,9 +102,9 @@ def find_processes(content):
                 current_process.set_sensitivity_signal(signal)
         
         # Procedure detection
-        if "procedure" in line:
+        if " procedure " in line:
             inside_procedure = True
-        if "end procedure" in line:
+        if " end procedure" in line:
             inside_procedure = False
             procedure_started = False
 
@@ -115,9 +114,9 @@ def find_processes(content):
             else:
                 process_started = True
 
-        if "variable" in line and current_process != None:
+        if " variable " in line and current_process != None:
             variable_declaration = line.split(": ")
-            variable_name = variable_declaration[0].split("variable")[1].replace(" ", "")
+            variable_name = variable_declaration[0].split(" variable ")[1].replace(" ", "")
             variable_type = variable_declaration[1].split(":=")
             variable_value = None
 
@@ -126,12 +125,12 @@ def find_processes(content):
 
             current_process.set_internal_variable(variable_name, value=variable_value, variable_type=variable_type[0].replace("; ", ""))
 
-        if ":=" in line and process_started == True:
+        if " := " in line and process_started == True:
             target_variable = line.split(":=")[0].replace("\t","").replace(" ", "")
             target_value = line.split(":=")[1].replace("\n", "").replace(";","").replace(" ", "") 
             current_process.set_internal_variable(target_variable, value=target_value)
 
-        if "<=" in line and process_started == True:
+        if " <= " in line and process_started == True:
             target_signal = line.split("<=")[0].replace("\t","").replace(" ", "")
             value = line.split("<=")[1].replace("\n", "").replace(";","").replace(" ", "")
             current_process.set_assigned_signal(target_signal, value)
