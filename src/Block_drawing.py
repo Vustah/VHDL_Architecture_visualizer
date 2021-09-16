@@ -1,7 +1,11 @@
+from diagrams import Cluster, Diagram
+from diagrams.programming.flowchart import Action
 
 
+    
 def main():
-  return 0  
+  with Diagram("Clustered Web Services"):
+    Action("Action")  
 
 if __name__ == "__main__":
-  main()
+   main()

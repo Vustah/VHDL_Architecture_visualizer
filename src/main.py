@@ -1,6 +1,7 @@
 import sys
 import os
 from tkinter import filedialog
+from Entity import Entity
 from Process import Process
 from Procedure import Procedure
 from Component import Component
@@ -27,36 +28,52 @@ def importfile(filename):
 
 
 def find_entity_with_signals(content):
-    entity = {}
-    entity_name = ""
+    entity = None
+    entity_name = ""    
+    inside_entity_declaration = False
+
     for line in content:
         line = line.replace(";", "").replace("\t", "  ").replace("\n", "")
         if "entity" in line:
             entity_name = line.split(" ")[1]
-            entity["name"] = entity_name
-            entity["IN"] = {}
-            entity["OUT"] = {}
+            entity = Entity(entity_name)            
+            inside_entity_declaration = True
+            # entity["name"] = entity_name
+            # entity["IN"] = {}
+            # entity["OUT"] = {}
 
-        if " in " in line:
+        if " in " in line and inside_entity_declaration:
             line = line.replace("port(", "")
-            signal_name = line.split(" in ")[0].replace(":",
-                                                        "").replace(" ", "")
+            signal_name = line.split(" in ")[0].replace(":", "").replace(" ", "")
             signal_type = line.split(" in ")[1].replace(":", "")
+            entity.set_input_signals(input_signal_name=signal_name,input_signal_type=signal_type)
+            # entity["IN"][signal_name] = signal_type
 
-            entity["IN"][signal_name] = signal_type
-
-        if " out " in line:
+        if " out " in line and inside_entity_declaration:
             line = line.replace("port(", "")
-            signal_name = line.split(" out ")[0].replace(":",
-                                                         "").replace(" ", "")
+            signal_name = line.split(" out ")[0].replace(":", "").replace(" ", "")
             signal_type = line.split(" out ")[1].replace(":", "")
-            entity["OUT"][signal_name] = signal_type
+            entity.set_output_signals(output_signal_name=signal_name,output_signal_type=signal_type)
+            # entity["OUT"][signal_name] = signal_type
 
         if ("end " + entity_name) in line:
-            break
+            inside_entity_declaration = False
 
     return entity
 
+def find_internal_signals(content,entity = None):
+    if entity == None:
+        entity = find_entity_with_signals(content)
+    for line in content:
+        if "signal " in line:
+            signal_declaration = line.split(": ")
+            signal_name = signal_declaration[0].split("signal ")[1].replace(" ","")
+            signal_type = signal_declaration[1].split(":=")
+            signal_value = None
+            if len(signal_type) > 1:
+                signal_value = signal_type[1].replace(" ","")
+            entity.set_internal_signals(signal_name, signal_type[0].replace("; ", ""), signal_value)
+    return entity
 
 def find_sensitivity_signals(process_line):
     starting_bracket = process_line.index("(")
@@ -107,10 +124,7 @@ def find_processes(content):
             if len(variable_type) > 1:
                 variable_value = variable_type[1].replace(" ", "")
 
-            current_process.set_internal_variable(
-                variable_name,
-                value=variable_value,
-                variable_type=variable_type[0].replace("; ", ""))
+            current_process.set_internal_variable(variable_name, value=variable_value, variable_type=variable_type[0].replace("; ", ""))
 
         if ":=" in line and process_started == True:
             target_variable = line.split(":=")[0].replace("\t","").replace(" ", "")
@@ -138,9 +152,30 @@ def remove_comments(content):
     return no_comment_content
 
 def print_all(entity,processes):
-    for key in entity:
-        print(key, ": ", entity[key])
-  
+    print(entity.get_name())
+
+    print("Input")
+    for signal in entity.get_input_signals():
+        print(" ", signal,": ", entity.get_input_signals()[signal])
+
+    print("Output")
+    for signal in entity.get_output_signals():
+        print(" ", signal,": ", entity.get_output_signals()[signal])
+
+    print("Internal Signal")
+    for signal in entity.get_internal_signals():
+        signal_type = entity.get_internal_signals()[signal]["type"]
+        if entity.get_internal_signals()[signal]["value"]:
+            value = entity.get_internal_signals()[signal]["value"]
+        else:
+             value = None
+
+        print(" ", signal,": ", signal_type, end="")
+        if value!= None:
+            print(" := ", value)
+        else:
+            print("")  
+    
     for process in processes:
         print("\n", process.get_process_name())
 
@@ -168,7 +203,7 @@ def main(filename):
     file_content = remove_comments(file_content)
 
     entity = find_entity_with_signals(file_content)
-  
+    entity = find_internal_signals(file_content,entity)
     processes = find_processes(file_content)
     print_all(entity,processes)
     return 0
