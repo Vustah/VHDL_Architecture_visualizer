@@ -15,13 +15,18 @@ class Process:
     def set_internal_variable(self, variable, value=None, variable_type=None):
         if variable in self.internal_variables:
             if value != None:
-                self.internal_variables[variable]["value"].append(value)
+                if not "value" in  self.internal_variables[variable]:
+                    self.internal_variables[variable]["value"] = []
+                if not value in self.internal_variables[variable]["value"]:
+                    self.internal_variables[variable]["value"].append(value)
         else:
             self.internal_variables[variable] = {}
 
             if variable_type != None:
                 self.internal_variables[variable]["type"] = variable_type
             if value != None:
+                if not "value" in  self.internal_variables[variable]:
+                    self.internal_variables[variable]["value"] = []
                 self.internal_variables[variable]["value"].append(value)
 
     def get_internal_variables(self):
@@ -29,7 +34,8 @@ class Process:
 
     def set_assigned_signal(self, signal, value):
         if signal in self.assigned_signals:
-            self.assigned_signals[signal].append(value)
+            if not value in self.assigned_signals[signal]:
+                self.assigned_signals[signal].append(value)
         else:
             self.assigned_signals[signal] = [value]
 

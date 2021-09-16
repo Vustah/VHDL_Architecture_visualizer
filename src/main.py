@@ -99,7 +99,7 @@ def find_processes(content):
                 process_started = True
 
         if "variable" in line and current_process != None:
-            variable_declaration = line.split(":")
+            variable_declaration = line.split(": ")
             variable_name = variable_declaration[0].split("variable")[1].replace(" ", "")
             variable_type = variable_declaration[1].split(":=")
             variable_value = None
@@ -113,7 +113,9 @@ def find_processes(content):
                 variable_type=variable_type[0].replace("; ", ""))
 
         if ":=" in line and process_started == True:
-            target_value = line.split(":=")[0].replace("\t","").replace(" ", "")
+            target_variable = line.split(":=")[0].replace("\t","").replace(" ", "")
+            target_value = line.split(":=")[1].replace("\n", "").replace(";","").replace(" ", "") 
+            current_process.set_internal_variable(target_variable, value=target_value)
 
         if "<=" in line and process_started == True:
             target_signal = line.split("<=")[0].replace("\t","").replace(" ", "")
@@ -135,21 +137,10 @@ def remove_comments(content):
         no_comment_content.append(line)
     return no_comment_content
 
-
-def main(filename):
-
-    try:
-        file_content, path = importfile(filename)
-    except:
-        return 1
-
-    file_content = remove_comments(file_content)
-
-    entity = find_entity_with_signals(file_content)
+def print_all(entity,processes):
     for key in entity:
         print(key, ": ", entity[key])
-
-    processes = find_processes(file_content)
+  
     for process in processes:
         print("\n", process.get_process_name())
 
@@ -166,6 +157,20 @@ def main(filename):
         for assigned_signal in process.get_assigned_signals():
             print("    ", assigned_signal, ":", process.get_assigned_signals()[assigned_signal])
 
+
+def main(filename):
+
+    try:
+        file_content, path = importfile(filename)
+    except:
+        return 1
+
+    file_content = remove_comments(file_content)
+
+    entity = find_entity_with_signals(file_content)
+  
+    processes = find_processes(file_content)
+    print_all(entity,processes)
     return 0
 
 
