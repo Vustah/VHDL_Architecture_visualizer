@@ -1,47 +1,9 @@
 import sys
 import os
 from tkinter import filedialog
-
-
-class Process:
-    def __init__(self, process_name):
-        self.process_name = process_name
-        self.sensitivity_list = []
-        self.internal_variables = {}
-        self.assigned_signals = {}
-
-    def set_sensitivity_signal(self, signal):
-        self.sensitivity_list.append(signal)
-
-    def get_sensitivity_signals(self):
-        return self.sensitivity_list
-
-    def set_internal_variable(self, variable, value=None, variable_type=None):
-        if variable in self.internal_variables:
-            if value != None:
-                self.internal_variables[variable]["value"].append(value)
-        else:
-            self.internal_variables[variable] = {}
-
-            if variable_type != None:
-                self.internal_variables[variable]["type"] = variable_type
-            if value != None:
-                self.internal_variables[variable]["value"].append(value)
-
-    def get_internal_variables(self):
-        return self.internal_variables
-
-    def set_assigned_signal(self, signal, value):
-        if signal in self.assigned_signals:
-            self.assigned_signals[signal].append(value)
-        else:
-            self.assigned_signals[signal] = [value]
-
-    def get_assigned_signals(self):
-        return self.assigned_signals
-
-    def get_process_name(self):
-        return self.process_name
+from Process import Process
+from Procedure import Procedure
+from Component import Component
 
 
 def find_path(filename):
@@ -77,8 +39,6 @@ def find_entity_with_signals(content):
 
         if " in " in line:
             line = line.replace("port(", "")
-            # print(line)
-            # print(line.split(" in "))
             signal_name = line.split(" in ")[0].replace(":",
                                                         "").replace(" ", "")
             signal_type = line.split(" in ")[1].replace(":", "")
@@ -110,7 +70,8 @@ def find_processes(content):
     list_of_prosesses = []
     current_process = None
     process_started = False
-
+    inside_procedure = False
+    procedure_started = False
     for line in content:
 
         if current_process == None:
@@ -118,20 +79,28 @@ def find_processes(content):
 
         if "process" in line and "end" not in line:
             end_process_name = line.index(":")
-            process_name = line[0:end_process_name].replace(" ", "").replace(
-                "\t", "")
+            process_name = line[0:end_process_name].replace(" ", "").replace("\t", "")
             current_process = Process(process_name)
             sensitivity_signals = find_sensitivity_signals(line)
             for signal in sensitivity_signals:
                 current_process.set_sensitivity_signal(signal)
+        
+        # Procedure detection
+        if "procedure" in line:
+            inside_procedure = True
+        if "end procedure" in line:
+            inside_procedure = False
+            procedure_started = False
 
         if "begin" in line:
-            process_started = True
+            if inside_procedure:
+                procedure_started = True
+            else:
+                process_started = True
 
         if "variable" in line and current_process != None:
             variable_declaration = line.split(":")
-            variable_name = variable_declaration[0].split(
-                "variable")[1].replace(" ", "")
+            variable_name = variable_declaration[0].split("variable")[1].replace(" ", "")
             variable_type = variable_declaration[1].split(":=")
             variable_value = None
 
@@ -143,12 +112,12 @@ def find_processes(content):
                 value=variable_value,
                 variable_type=variable_type[0].replace("; ", ""))
 
+        if ":=" in line and process_started == True:
+            target_value = line.split(":=")[0].replace("\t","").replace(" ", "")
+
         if "<=" in line and process_started == True:
-            target_signal = line.split("<=")[0].replace("\t",
-                                                        "").replace(" ", "")
-            value = line.split("<=")[1].replace("\n", "").replace(";",
-                                                                  "").replace(
-                                                                      " ", "")
+            target_signal = line.split("<=")[0].replace("\t","").replace(" ", "")
+            value = line.split("<=")[1].replace("\n", "").replace(";","").replace(" ", "")
             current_process.set_assigned_signal(target_signal, value)
 
         if "end process" in line:
@@ -191,13 +160,11 @@ def main(filename):
         if len(process.get_internal_variables()) > 0:
             print("   Internal Variables:")
             for internal_variable in process.get_internal_variables():
-                print("    ", internal_variable, ":",
-                      process.get_internal_variables()[internal_variable])
+                print("    ", internal_variable, ":", process.get_internal_variables()[internal_variable])
 
         print("   Assigned Signals:  ")
         for assigned_signal in process.get_assigned_signals():
-            print("    ", assigned_signal, ":",
-                  process.get_assigned_signals()[assigned_signal])
+            print("    ", assigned_signal, ":", process.get_assigned_signals()[assigned_signal])
 
     return 0
 
