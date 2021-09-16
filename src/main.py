@@ -7,7 +7,7 @@ class Process:
     def __init__(self, process_name):
         self.process_name = process_name
         self.sensitivity_list = []
-        self.internal_variables = []
+        self.internal_variables = {}
         self.assigned_signals = {}
 
     def set_sensitivity_signal(self, signal):
@@ -16,8 +16,17 @@ class Process:
     def get_sensitivity_signals(self):
         return self.sensitivity_list
 
-    def set_internal_variable(self, variable):
-        self.internal_variables.append(variable)
+    def set_internal_variable(self, variable, value=None, variable_type=None):
+        if variable in self.internal_variables:
+            if value != None:
+                self.internal_variables[variable]["value"].append(value)
+        else:
+            self.internal_variables[variable] = {}
+
+            if variable_type != None:
+                self.internal_variables[variable]["type"] = variable_type
+            if value != None:
+                self.internal_variables[variable]["value"].append(value)
 
     def get_internal_variables(self):
         return self.internal_variables
@@ -35,16 +44,24 @@ class Process:
         return self.process_name
 
 
+def find_path(filename):
+    path_end = filename.rfind("/")
+    path = filename[0:path_end]
+    return path
+
+
 def importfile(filename):
     if filename == None:
         filename = filedialog.askopenfilename()
+
+    path = find_path(filename)
 
     infile = open(filename, 'r')
 
     infile_content = []
     for line in infile.readlines():
         infile_content.append(line)
-    return infile_content
+    return infile_content, path
 
 
 def find_entity_with_signals(content):
@@ -95,8 +112,7 @@ def find_processes(content):
     process_started = False
 
     for line in content:
-        comment_line_idx = line.find("--")
-        line = line[0:comment_line_idx]
+
         if current_process == None:
             process_started = False
 
@@ -112,7 +128,22 @@ def find_processes(content):
         if "begin" in line:
             process_started = True
 
-        if "<=" in line and process_started != False:
+        if "variable" in line and current_process != None:
+            variable_declaration = line.split(":")
+            variable_name = variable_declaration[0].split(
+                "variable")[1].replace(" ", "")
+            variable_type = variable_declaration[1].split(":=")
+            variable_value = None
+
+            if len(variable_type) > 1:
+                variable_value = variable_type[1].replace(" ", "")
+
+            current_process.set_internal_variable(
+                variable_name,
+                value=variable_value,
+                variable_type=variable_type[0].replace("; ", ""))
+
+        if "<=" in line and process_started == True:
             target_signal = line.split("<=")[0].replace("\t",
                                                         "").replace(" ", "")
             value = line.split("<=")[1].replace("\n", "").replace(";",
@@ -127,20 +158,46 @@ def find_processes(content):
     return list_of_prosesses
 
 
+def remove_comments(content):
+    no_comment_content = []
+    for line in content:
+        comment_line_idx = line.find("--")
+        line = line[0:comment_line_idx]
+        no_comment_content.append(line)
+    return no_comment_content
+
+
 def main(filename):
 
-    # try:
-    file_content = importfile(filename)
-    # except:
-    #     return 1
+    try:
+        file_content, path = importfile(filename)
+    except:
+        return 1
+
+    file_content = remove_comments(file_content)
 
     entity = find_entity_with_signals(file_content)
-    print(entity)
+    for key in entity:
+        print(key, ": ", entity[key])
+
     processes = find_processes(file_content)
     for process in processes:
-        print(process.get_process_name())
-        print("Sensitivity list:", process.get_sensitivity_signals())
-        print("Assigned Signals:", process.get_assigned_signals())
+        print("\n", process.get_process_name())
+
+        print("   Sensitivity list:  ")
+        for sens_signal in process.get_sensitivity_signals():
+            print("    ", sens_signal)
+
+        if len(process.get_internal_variables()) > 0:
+            print("   Internal Variables:")
+            for internal_variable in process.get_internal_variables():
+                print("    ", internal_variable, ":",
+                      process.get_internal_variables()[internal_variable])
+
+        print("   Assigned Signals:  ")
+        for assigned_signal in process.get_assigned_signals():
+            print("    ", assigned_signal, ":",
+                  process.get_assigned_signals()[assigned_signal])
 
     return 0
 
