@@ -95,6 +95,8 @@ def find_processes(content):
     process_started = False
 
     for line in content:
+        comment_line_idx = line.find("--")
+        line = line[0:comment_line_idx]
         if current_process == None:
             process_started = False
 
