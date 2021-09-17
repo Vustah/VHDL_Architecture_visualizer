@@ -37,6 +37,8 @@ def sort_system(entity, processes):
       tmp_block.set_output_signal(signal)
       for spesific_value in value:
         tmp_block.set_input_signal(spesific_value)
+    for signal in process.get_input_signals():
+        tmp_block.set_input_signal(signal)
     block_list.append(tmp_block)
     
   return block_list
@@ -127,6 +129,45 @@ def find_processes(content):
                 procedure_started = True
             else:
                 process_started = True
+
+        if " if " in line and process_started == True:
+          if_start = line.find("if")
+          line_splitted = line[if_start:].split(" ")
+          multiple_lines = []
+          if "and" in line_splitted or "or" in line_splitted:
+            split_idx = []
+            for idx,item in enumerate(line_splitted):
+              if item == "and" or item == "or":
+                split_idx.append(idx)
+            
+
+            last_idx = 0
+            for idx in split_idx:
+              
+              multiple_lines.append(line_splitted[last_idx+1:idx])
+              last_idx = idx
+            multiple_lines.append(line_splitted[last_idx+1:])
+          
+          else: 
+            multiple_lines.append(line_splitted)
+
+          for multiple_line_splitted in multiple_lines:
+            if "=" in multiple_line_splitted:
+              equal_idx = multiple_line_splitted.index("=")
+              first_signal = multiple_line_splitted[equal_idx-1].replace("(","")
+              second_signal = multiple_line_splitted[equal_idx+1].replace(")","")
+              current_process.set_input_signals(first_signal)
+              current_process.set_input_signals(second_signal)
+            
+          if "rising_edge" in line:
+            bracket_start = line.find("(")+1
+            bracket_end = line.find(")")
+            signal = line[bracket_start:bracket_end]
+            current_process.set_input_signals(signal)
+          
+          
+          print(line_splitted)
+          
 
         if " variable " in line and current_process != None:
             variable_declaration = line.split(": ")

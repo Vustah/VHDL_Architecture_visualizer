@@ -46,5 +46,9 @@ class Process:
     def set_input_signals(self, signal):
       self.input_signal.append(signal)
 
+    def get_input_signals(self):
+      return self.input_signal
+
+
     def get_process_name(self):
         return self.process_name
