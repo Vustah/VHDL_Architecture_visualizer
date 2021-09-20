@@ -1,5 +1,4 @@
-from diagrams import Cluster, Diagram, Edge
-from diagrams.programming.flowchart import Action,PredefinedProcess
+from N2G import drawio_diagram
 
 class Block:
   def __init__(self, name):
@@ -38,41 +37,44 @@ class Wire:
     return self.width
   
   
+
 def draw_diagram(diagram_name, blocks, wires):
+  diagram = drawio_diagram()
+  diagram.add_diagram(diagram_name)
+  INPUT_BLOCK = blocks[0]
+  OUTPUT_BLOCK = blocks[-1]
+  diagram.add_node(id=INPUT_BLOCK.get_name())
+  diagram.add_node(id=OUTPUT_BLOCK.get_name())
   internal_blocks = blocks[1:-1]
+  for block in internal_blocks:
+    diagram.add_node(id=block.get_name())
+
+  for block in internal_blocks:
+    for signal in block.get_input_signals():
+      for jdx, another_block in enumerate(internal_blocks):
+        if signal in another_block.get_output_signals():
+          block1 = block.get_name()
+          block2 = another_block.get_name()
+          diagram.add_link(block1,block2,label=signal)
   
-  with Diagram(diagram_name):
+  for signal in INPUT_BLOCK.get_output_signals():
+    for jdx, another_block in enumerate(internal_blocks):
+      if signal in another_block.get_input_signals():
+        block1 = INPUT_BLOCK.get_name()
+        block2 = another_block.get_name()
+        diagram.add_link(block1,block2,label=signal)
 
-    INPUT = PredefinedProcess(blocks[0].get_name())
-    OUTPUT = PredefinedProcess(blocks[-1].get_name())
-    block_list = []
-    with Cluster(diagram_name):
-      for block in internal_blocks:
-        if not isinstance(block,Block):
-          return 1
-        block_list.append(PredefinedProcess(block.get_name()))
-      
-      for idx, block in enumerate(internal_blocks): 
-        if not isinstance(block,Block):
-          return 1
+  
+  for signal in OUTPUT_BLOCK.get_input_signals():
+    for jdx, another_block in enumerate(internal_blocks):
+      if signal in another_block.get_output_signals():
+        block1 = OUTPUT_BLOCK.get_name()
+        block2 = another_block.get_name()
+        diagram.add_link(block1,block2,label=signal)
 
-        for signal in block.get_input_signals():
-          for jdx, another_block in enumerate(internal_blocks):
-            if signal in another_block.get_output_signals():
-              block_list[jdx] >> Edge(label=signal) >>block_list[idx]
 
-    for signal in blocks[0].get_output_signals():
-      for jdx, another_block in enumerate(internal_blocks):
-            if signal in another_block.get_input_signals():
-              INPUT >> Edge(label=signal) >> block_list[jdx]
-    
-    for signal in blocks[-1].get_input_signals():
-      for jdx, another_block in enumerate(internal_blocks):
-            if signal in another_block.get_output_signals():
-              block_list[jdx] >> Edge(label=signal) >> OUTPUT
-
-  return 0      
-
+  diagram.dump_file(filename="DrawIO_diagram.drawio")
+  return 0
     
 def main():
   block1 = Block("foo")
