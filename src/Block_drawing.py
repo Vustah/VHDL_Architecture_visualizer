@@ -1,5 +1,5 @@
-from diagrams import Cluster, Diagram
-from diagrams.programming.flowchart import Action
+from diagrams import Cluster, Diagram, Edge
+from diagrams.programming.flowchart import Action,PredefinedProcess
 
 class Block:
   def __init__(self, name):
@@ -39,23 +39,38 @@ class Wire:
   
   
 def draw_diagram(diagram_name, blocks, wires):
-  with Diagram(diagram_name):
-    block_list = []
-    for block in blocks:
-      if not isinstance(block,Block):
-        return 1
-      block_list.append(Action(block.get_name()))
-    
-    for idx, block in enumerate(blocks): 
-      if not isinstance(block,Block):
-        return 1
-      for signal in block.get_input_signals():
-        
-        for jdx, another_block in enumerate(blocks):
-          
-          if signal in another_block.get_output_signals():
-            block_list[jdx] >> block_list[idx]
+  internal_blocks = blocks[1:-1]
   
+  with Diagram(diagram_name):
+
+    INPUT = PredefinedProcess(blocks[0].get_name())
+    OUTPUT = PredefinedProcess(blocks[-1].get_name())
+    block_list = []
+    with Cluster(diagram_name):
+      for block in internal_blocks:
+        if not isinstance(block,Block):
+          return 1
+        block_list.append(PredefinedProcess(block.get_name()))
+      
+      for idx, block in enumerate(internal_blocks): 
+        if not isinstance(block,Block):
+          return 1
+
+        for signal in block.get_input_signals():
+          for jdx, another_block in enumerate(internal_blocks):
+            if signal in another_block.get_output_signals():
+              block_list[jdx] >> Edge(label=signal) >>block_list[idx]
+
+    for signal in blocks[0].get_output_signals():
+      for jdx, another_block in enumerate(internal_blocks):
+            if signal in another_block.get_input_signals():
+              INPUT >> Edge(label=signal) >> block_list[jdx]
+    
+    for signal in blocks[-1].get_input_signals():
+      for jdx, another_block in enumerate(internal_blocks):
+            if signal in another_block.get_output_signals():
+              block_list[jdx] >> Edge(label=signal) >> OUTPUT
+
   return 0      
 
     

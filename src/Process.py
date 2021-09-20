@@ -44,7 +44,8 @@ class Process:
         return self.assigned_signals
 
     def set_input_signals(self, signal):
-      self.input_signal.append(signal)
+      if signal not in self.input_signal:
+        self.input_signal.append(signal)
 
     def get_input_signals(self):
       return self.input_signal
