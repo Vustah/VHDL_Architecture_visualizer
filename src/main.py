@@ -28,6 +28,15 @@ def importfile(filename):
 
 def sort_system(entity, processes):
   block_list = []
+
+  entity_inputs = entity.get_input_signals()
+  INPUT = Block("INPUT")
+  for signal in entity_inputs:
+    INPUT.set_output_signal(signal)
+
+  block_list.append(INPUT)
+
+
   for process in processes:
     if not isinstance(process, Process):
       return 1
@@ -40,35 +49,43 @@ def sort_system(entity, processes):
     for signal in process.get_input_signals():
         tmp_block.set_input_signal(signal)
     block_list.append(tmp_block)
-    
+
+
+  entity_outputs = entity.get_output_signals()
+  OUTPUT = Block("OUTPUT")
+  for signal in entity_outputs:
+    OUTPUT.set_input_signal(signal)
+
+  block_list.append(OUTPUT)
+
   return block_list
 
 def find_entity_with_signals(content):
     entity = None
-    entity_name = ""    
+    entity_name = ""
     inside_entity_declaration = False
 
     for line in content:
         line = line.replace(";", "").replace("\t", "  ").replace("\n", "")
         if "entity" in line:
             entity_name = line.split(" ")[1]
-            entity = Entity(entity_name)            
+            entity = Entity(entity_name)
             inside_entity_declaration = True
-            
+
 
         if " in " in line and inside_entity_declaration:
             line = line.replace("port(", "")
             signal_name = line.split(" in ")[0].replace(":", "").replace(" ", "")
             signal_type = line.split(" in ")[1].replace(":", "")
             entity.set_input_signals(input_signal_name=signal_name,input_signal_type=signal_type)
-            
+
 
         if " out " in line and inside_entity_declaration:
             line = line.replace("port(", "")
             signal_name = line.split(" out ")[0].replace(":", "").replace(" ", "")
             signal_type = line.split(" out ")[1].replace(":", "")
             entity.set_output_signals(output_signal_name=signal_name,output_signal_type=signal_type)
-            
+
 
         if ("end " + entity_name) in line:
             inside_entity_declaration = False
@@ -80,7 +97,7 @@ def find_internal_signals(content,entity = None):
         entity = find_entity_with_signals(content)
     for line in content:
         if " signal " in line:
-            
+
             signal_declaration = line.split(": ")
             signal_name = signal_declaration[0].split(" signal ")[1].replace(" ","")
             signal_type = signal_declaration[1].split(":=")
@@ -116,7 +133,7 @@ def find_processes(content):
             sensitivity_signals = find_sensitivity_signals(line)
             for signal in sensitivity_signals:
                 current_process.set_sensitivity_signal(signal)
-        
+
         # Procedure detection
         if " procedure " in line:
             inside_procedure = True
@@ -139,16 +156,16 @@ def find_processes(content):
             for idx,item in enumerate(line_splitted):
               if item == "and" or item == "or":
                 split_idx.append(idx)
-            
+
 
             last_idx = 0
             for idx in split_idx:
-              
+
               multiple_lines.append(line_splitted[last_idx+1:idx])
               last_idx = idx
             multiple_lines.append(line_splitted[last_idx+1:])
-          
-          else: 
+
+          else:
             multiple_lines.append(line_splitted)
 
           for multiple_line_splitted in multiple_lines:
@@ -158,16 +175,16 @@ def find_processes(content):
               second_signal = multiple_line_splitted[equal_idx+1].replace(")","")
               current_process.set_input_signals(first_signal)
               current_process.set_input_signals(second_signal)
-            
+
           if "rising_edge" in line:
             bracket_start = line.find("(")+1
             bracket_end = line.find(")")
             signal = line[bracket_start:bracket_end]
             current_process.set_input_signals(signal)
-          
-          
-          print(line_splitted)
-          
+
+
+          # print(line_splitted)
+
 
         if " variable " in line and current_process != None:
             variable_declaration = line.split(": ")
@@ -182,7 +199,7 @@ def find_processes(content):
 
         if " := " in line and process_started == True:
             target_variable = line.split(":=")[0].replace("\t","").replace(" ", "")
-            target_value = line.split(":=")[1].replace("\n", "").replace(";","").replace(" ", "") 
+            target_value = line.split(":=")[1].replace("\n", "").replace(";","").replace(" ", "")
             current_process.set_internal_variable(target_variable, value=target_value)
 
         if " <= " in line and process_started == True:
@@ -228,8 +245,8 @@ def print_all(entity,processes):
         if value!= None:
             print(" := ", value)
         else:
-            print("")  
-    
+            print("")
+
     for process in processes:
         print("\n", process.get_process_name())
 
@@ -259,11 +276,11 @@ def main(filename):
     entity = find_entity_with_signals(file_content)
     entity = find_internal_signals(file_content,entity)
     processes = find_processes(file_content)
-    print_all(entity,processes)
+    # print_all(entity,processes)
     block_list = sort_system(entity,processes)
     if block_list != 1:
       draw_diagram(entity.get_name(),block_list,None)
-    else: 
+    else:
       return 1
     return 0
 
