@@ -5,7 +5,8 @@ class Block:
     self.set_name(name)
     self.input_signals = []
     self.output_signals = []
-  
+    self.block_type = "rounded_rectangle"
+
   def set_input_signal(self, signal):
     self.input_signals.append(signal)
     
@@ -23,7 +24,12 @@ class Block:
   
   def get_name(self):
     return self.name
-    
+
+  def set_block_type(self, block_type):
+    self.block_type = block_type
+  
+  def get_block_type(self):
+    return self.block_type
     
 class Wire:
   def __init__(self, name, width):
@@ -60,35 +66,37 @@ def draw_diagram(diagram_name, blocks, wires):
   for block in internal_blocks:
     for signal in block.get_input_signals():
         diagram = draw_wire(diagram,block,INPUT_BLOCK,signal)
-  
 
-  
-  # for signal in INPUT_BLOCK.get_output_signals():
-  #   for jdx, another_block in enumerate(internal_blocks):
-  #     diagram = draw_wire(diagram,another_block,INPUT_BLOCK,signal)
 
   
   for signal in OUTPUT_BLOCK.get_input_signals():
     for jdx, another_block in enumerate(internal_blocks):
       diagram = draw_wire(diagram,OUTPUT_BLOCK,another_block,signal)
 
-  diagram.layout(algo="drl")
+  diagram.layout(algo="lgl")
   diagram.dump_file(filename="DrawIO_diagram.drawio")
   return 0
 
 def place_nodes(diagram,list_of_nodes):
   x_pos = 0
   y_pos = 0
+  inverter_style = "shape=mxgraph.electrical.logic_gates.inverter_2;align=left;spacingLeft=22;verticalLabelPosition=top;"
+  buffer_style = "shape=mxgraph.electrical.logic_gates.buffer2;align=left;spacingLeft=22;verticalLabelPosition=top;"
+  normal_style = "rounded=1;verticalLabelPosition=top;"
   for idx,node in enumerate(list_of_nodes):
     if node.get_name() == "INPUT" or node.get_name() == "OUTPUT":
-      node_height = 1000
+      node_height = 500
       y_pos = 0
     else:
       node_height = 100
     
-    diagram.add_node(id=node.get_name(), x_pos=x_pos, y_pos=y_pos, height = node_height)
+    if node.get_block_type() == "not":
+      diagram.add_node(id=node.get_name(), x_pos=x_pos, y_pos=y_pos,  style = inverter_style, height = node_height)
+    elif node.get_block_type() == "buffer":
+      diagram.add_node(id=node.get_name(), x_pos=x_pos, y_pos=y_pos,  style = buffer_style, height = node_height)
+    else:
+      diagram.add_node(id=node.get_name(), x_pos=x_pos, y_pos=y_pos,  style = normal_style, height = node_height)
 
-  
   return diagram
   
 def draw_wire(diagram,input_block,output_block, signal_name):
@@ -100,7 +108,7 @@ def draw_wire(diagram,input_block,output_block, signal_name):
     if input_block_name != output_block_name:
       diagram.add_link(output_block_name,input_block_name,label=signal_name, style=arrow_style)
   
-      print(output_block_name,signal_name,input_block_name)
+      #print(output_block_name,signal_name,input_block_name)
   
   return diagram
 

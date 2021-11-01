@@ -2,10 +2,11 @@ import sys
 import os
 from tkinter import filedialog
 from Entity import Entity
-from Process import Process
+from Process import Process,Inline_process
 from Procedure import Procedure
 from Component import Component
 from Block_drawing import Block, Wire, draw_diagram
+
 
 def find_path(filename):
     path_end = filename.rfind("/")
@@ -38,7 +39,7 @@ def sort_system(entity, processes):
 
 
   for process in processes:
-    if not isinstance(process, Process):
+    if not (isinstance(process, Process) or isinstance(process, Inline_process)):
       return 1
     tmp_block = Block(process.get_process_name())
     for signal in process.get_assigned_signals():
@@ -48,6 +49,10 @@ def sort_system(entity, processes):
         tmp_block.set_input_signal(spesific_value)
     for signal in process.get_input_signals():
         tmp_block.set_input_signal(signal)
+    if isinstance(process,Inline_process):
+      buffer_type = process.get_buffer_type()
+      tmp_block.set_block_type(buffer_type)
+
     block_list.append(tmp_block)
 
 
@@ -117,6 +122,7 @@ def find_sensitivity_signals(process_line):
 
 def find_processes(content):
     list_of_prosesses = []
+    list_of_inline_processes = []
     current_process = None
     process_started = False
     inside_procedure = False
@@ -181,10 +187,7 @@ def find_processes(content):
             bracket_end = line.find(")")
             signal = line[bracket_start:bracket_end]
             current_process.set_input_signals(signal)
-
-
           # print(line_splitted)
-
 
         if " variable " in line and current_process != None:
             variable_declaration = line.split(": ")
@@ -202,18 +205,52 @@ def find_processes(content):
             target_value = line.split(":=")[1].replace("\n", "").replace(";","").replace(" ", "")
             current_process.set_internal_variable(target_variable, value=target_value)
 
-        if " <= " in line and process_started == True:
+        if " <= " in line:
+          if process_started == True:
             target_signal = line.split("<=")[0].replace("\t","").replace(" ", "")
             value = line.split("<=")[1].replace("\n", "").replace(";","").replace(" ", "")
             current_process.set_assigned_signal(target_signal, value)
+          elif not inside_procedure:
+            list_of_inline_processes.append(define_inline_process(line))
 
         if "end process" in line:
             list_of_prosesses.append(current_process)
             current_process = None
 
+    list_of_prosesses = list_of_prosesses+list_of_inline_processes
     return list_of_prosesses
 
+def define_inline_process(line):
+  target_signal = line.split("<=")[0].replace("\t","").replace(" ", "")
+  value_list = line.split("<=")[1].replace("\n", "").replace(";","").split(" ")
+  buffer_type = "buffer"
+  value = None
+  second_value = None
+  trigger_signal = None
 
+  if len(value_list)<4:
+    if "not" in value_list:
+      buffer_type = "not"
+    value = value_list[-1]
+    print(target_signal,value)
+  else:
+    if "when" in value_list:
+      value = value_list[1]
+      second_value = value_list[-1]
+      trigger_signal = value_list[3]
+    print(target_signal,"<=",value," or ", second_value,"if", trigger_signal)
+
+  inline_process = Inline_process(target_signal)  
+  inline_process.set_buffer_type(gate_type=buffer_type)
+  if value != None:
+    inline_process.set_assigned_signal(target_signal,value)
+  if second_value != None:
+    inline_process.set_assigned_signal(target_signal,second_value,)
+  if trigger_signal != None:
+    inline_process.set_assigned_signal(target_signal,trigger_signal)
+
+
+  return inline_process
 
 
 def remove_comments(content):
@@ -278,7 +315,7 @@ def main(filename):
     entity = find_entity_with_signals(file_content)
     entity = find_internal_signals(file_content,entity)
     processes = find_processes(file_content)
-    # print_all(entity,processes)
+    #print_all(entity,processes)
     block_list = sort_system(entity,processes)
     if block_list != 1:
       draw_diagram(entity.get_name(),block_list,None)

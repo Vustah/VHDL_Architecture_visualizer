@@ -50,6 +50,16 @@ class Process:
     def get_input_signals(self):
       return self.input_signal
 
-
     def get_process_name(self):
         return self.process_name
+
+
+class Inline_process(Process):
+  def __init__(self, process_name):
+    Process.__init__(self,process_name)
+    self.buffer_type ="buffer"
+    
+  def set_buffer_type(self, gate_type="buffer"):
+    self.buffer_type = gate_type
+  def get_buffer_type(self):
+    return self.buffer_type
