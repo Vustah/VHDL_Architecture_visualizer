@@ -36,46 +36,74 @@ class Wire:
   def get_width(self):
     return self.width
   
-  
+
 
 def draw_diagram(diagram_name, blocks, wires):
   diagram = drawio_diagram()
   diagram.add_diagram(diagram_name)
   INPUT_BLOCK = blocks[0]
   OUTPUT_BLOCK = blocks[-1]
-  diagram.add_node(id=INPUT_BLOCK.get_name())
-  diagram.add_node(id=OUTPUT_BLOCK.get_name())
+  
+
+
+  
   internal_blocks = blocks[1:-1]
-  for block in internal_blocks:
-    diagram.add_node(id=block.get_name())
+
+
+  diagram = place_nodes(diagram, blocks)
 
   for block in internal_blocks:
     for signal in block.get_input_signals():
-      for jdx, another_block in enumerate(internal_blocks):
-        if signal in another_block.get_output_signals():
-          block1 = block.get_name()
-          block2 = another_block.get_name()
-          diagram.add_link(block1,block2,label=signal)
+      for jdx, another_block in enumerate( internal_blocks):
+        diagram = draw_wire(diagram,block,another_block,signal)
   
-  for signal in INPUT_BLOCK.get_output_signals():
-    for jdx, another_block in enumerate(internal_blocks):
-      if signal in another_block.get_input_signals():
-        block1 = INPUT_BLOCK.get_name()
-        block2 = another_block.get_name()
-        diagram.add_link(block1,block2,label=signal)
+  for block in internal_blocks:
+    for signal in block.get_input_signals():
+        diagram = draw_wire(diagram,block,INPUT_BLOCK,signal)
+  
+
+  
+  # for signal in INPUT_BLOCK.get_output_signals():
+  #   for jdx, another_block in enumerate(internal_blocks):
+  #     diagram = draw_wire(diagram,another_block,INPUT_BLOCK,signal)
 
   
   for signal in OUTPUT_BLOCK.get_input_signals():
     for jdx, another_block in enumerate(internal_blocks):
-      if signal in another_block.get_output_signals():
-        block1 = OUTPUT_BLOCK.get_name()
-        block2 = another_block.get_name()
-        diagram.add_link(block1,block2,label=signal)
+      diagram = draw_wire(diagram,OUTPUT_BLOCK,another_block,signal)
 
-
+  diagram.layout(algo="drl")
   diagram.dump_file(filename="DrawIO_diagram.drawio")
   return 0
+
+def place_nodes(diagram,list_of_nodes):
+  x_pos = 0
+  y_pos = 0
+  for idx,node in enumerate(list_of_nodes):
+    if node.get_name() == "INPUT" or node.get_name() == "OUTPUT":
+      node_height = 1000
+      y_pos = 0
+    else:
+      node_height = 100
     
+    diagram.add_node(id=node.get_name(), x_pos=x_pos, y_pos=y_pos, height = node_height)
+
+  
+  return diagram
+  
+def draw_wire(diagram,input_block,output_block, signal_name):
+  arrow_style = "endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;"
+
+  if signal_name in output_block.get_output_signals():
+    output_block_name = output_block.get_name()
+    input_block_name = input_block.get_name()
+    if input_block_name != output_block_name:
+      diagram.add_link(output_block_name,input_block_name,label=signal_name, style=arrow_style)
+  
+      print(output_block_name,signal_name,input_block_name)
+  
+  return diagram
+
 def main():
   block1 = Block("foo")
   block2 = Block("bar")
