@@ -206,9 +206,10 @@ def find_processes(content):
             current_process.set_internal_variable(target_variable, value=target_value)
 
         if " <= " in line:
-          if process_started == True:
+          if process_started  or procedure_started:
             target_signal = line.split("<=")[0].replace("\t","").replace(" ", "")
             value = line.split("<=")[1].replace("\n", "").replace(";","").replace(" ", "")
+            
             current_process.set_assigned_signal(target_signal, value)
           elif not inside_procedure:
             list_of_inline_processes.append(define_inline_process(line))
@@ -220,25 +221,37 @@ def find_processes(content):
     list_of_prosesses = list_of_prosesses+list_of_inline_processes
     return list_of_prosesses
 
+def pop_elements_from_list(list_to_pop, item_to_pop):
+  popped_list = []
+  for idx,item in enumerate(list_to_pop):
+    if item != item_to_pop:
+      popped_list.append(item)
+    
+  return popped_list
+
 def define_inline_process(line):
   target_signal = line.split("<=")[0].replace("\t","").replace(" ", "")
   value_list = line.split("<=")[1].replace("\n", "").replace(";","").split(" ")
+  
+  value_list = pop_elements_from_list(value_list,'')
+  
   buffer_type = "buffer"
   value = None
   second_value = None
   trigger_signal = None
-
+  
+  
   if len(value_list)<4:
     if "not" in value_list:
       buffer_type = "not"
     value = value_list[-1]
-    print(target_signal,value)
+    # print(target_signal,value)
   else:
     if "when" in value_list:
-      value = value_list[1]
+      value = value_list[0]
       second_value = value_list[-1]
-      trigger_signal = value_list[3]
-    print(target_signal,"<=",value," or ", second_value,"if", trigger_signal)
+      trigger_signal = value_list[2]
+    # print(target_signal,"<=",value," or ", second_value,"if", trigger_signal)
 
   inline_process = Inline_process(target_signal)  
   inline_process.set_buffer_type(gate_type=buffer_type)
