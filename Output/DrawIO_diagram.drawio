@@ -1,123 +1,107 @@
-<mxfile compressed="false" host="Electron" modified="2021-11-01T14:58:05.427Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/15.4.0 Chrome/91.0.4472.164 Electron/13.5.0 Safari/537.36" version="15.4.0" etag="50eUY0wcQwuOwaFW5rdt" type="device">
+<mxfile compressed="false" host="Electron" modified="2021-11-02T07:54:56.597Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/15.4.0 Chrome/91.0.4472.164 Electron/13.5.0 Safari/537.36" version="15.4.0" etag="TbMjjBb6NKpOOKjYeuTW" type="device">
   <diagram id="spi_slave" name="spi_slave">
-    <mxGraphModel dx="3253" dy="1391" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="1">
+    <mxGraphModel dx="573" dy="1497" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="1">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <object label="INPUT" id="INPUT">
           <mxCell style="rounded=1;verticalLabelPosition=top;labelPosition=center;align=center;verticalAlign=bottom;" parent="1" vertex="1">
-            <mxGeometry x="-570" y="180" width="120" height="500" as="geometry" />
+            <mxGeometry width="120" height="500" as="geometry" />
           </mxCell>
         </object>
         <object label="p_syncronization" id="p_syncronization">
           <mxCell style="rounded=1;verticalLabelPosition=top;labelPosition=center;align=center;verticalAlign=bottom;" parent="1" vertex="1">
-            <mxGeometry x="-170" y="380" width="120" height="100" as="geometry" />
+            <mxGeometry x="240" y="10" width="120" height="100" as="geometry" />
           </mxCell>
         </object>
         <object label="p_pol_process" id="p_pol_process">
           <mxCell style="rounded=1;verticalLabelPosition=top;labelPosition=center;align=center;verticalAlign=bottom;" parent="1" vertex="1">
-            <mxGeometry x="530" y="880" width="120" height="100" as="geometry" />
+            <mxGeometry x="400" y="150" width="120" height="100" as="geometry" />
           </mxCell>
         </object>
         <object label="p_pha_process" id="p_pha_process">
           <mxCell style="rounded=1;verticalLabelPosition=top;labelPosition=center;align=center;verticalAlign=bottom;" parent="1" vertex="1">
-            <mxGeometry x="994" y="155" width="120" height="100" as="geometry" />
+            <mxGeometry x="600" y="300" width="120" height="100" as="geometry" />
           </mxCell>
         </object>
         <object label="p_mosi_DATA" id="p_mosi_DATA">
           <mxCell style="rounded=1;verticalLabelPosition=top;labelPosition=center;align=center;verticalAlign=bottom;" parent="1" vertex="1">
-            <mxGeometry x="1250" y="300" width="120" height="100" as="geometry" />
+            <mxGeometry x="800" y="450" width="120" height="100" as="geometry" />
           </mxCell>
         </object>
         <object label="p_set_data_out" id="p_set_data_out">
           <mxCell style="rounded=1;verticalLabelPosition=top;labelPosition=center;align=center;verticalAlign=bottom;" parent="1" vertex="1">
-            <mxGeometry x="650" y="485" width="120" height="100" as="geometry" />
+            <mxGeometry x="1000" y="600" width="120" height="100" as="geometry" />
           </mxCell>
         </object>
         <object label="p_miso_DATA" id="p_miso_DATA">
           <mxCell style="rounded=1;verticalLabelPosition=top;labelPosition=center;align=center;verticalAlign=bottom;" parent="1" vertex="1">
-            <mxGeometry x="550" y="170" width="120" height="100" as="geometry" />
+            <mxGeometry x="1200" y="750" width="120" height="100" as="geometry" />
           </mxCell>
         </object>
         <object label="p_read_axistream" id="p_read_axistream">
           <mxCell style="rounded=1;verticalLabelPosition=top;labelPosition=center;align=center;verticalAlign=bottom;" parent="1" vertex="1">
-            <mxGeometry x="140" y="70" width="120" height="100" as="geometry" />
+            <mxGeometry x="1400" y="900" width="120" height="100" as="geometry" />
           </mxCell>
         </object>
         <object label="rst" id="rst">
           <mxCell style="shape=mxgraph.electrical.logic_gates.inverter_2;align=center;spacingLeft=22;verticalLabelPosition=top;labelPosition=center;verticalAlign=bottom;" parent="1" vertex="1">
-            <mxGeometry x="190" y="1230" width="120" height="100" as="geometry" />
+            <mxGeometry x="1600" y="1050" width="120" height="100" as="geometry" />
           </mxCell>
         </object>
         <object label="mosi" id="mosi">
           <mxCell style="shape=mxgraph.electrical.logic_gates.buffer2;align=center;spacingLeft=22;verticalLabelPosition=top;labelPosition=center;verticalAlign=bottom;" parent="1" vertex="1">
-            <mxGeometry x="220" y="580" width="120" height="100" as="geometry" />
+            <mxGeometry x="1800" y="1200" width="120" height="100" as="geometry" />
           </mxCell>
         </object>
         <object label="cs" id="cs">
           <mxCell style="shape=mxgraph.electrical.logic_gates.inverter_2;align=center;spacingLeft=22;verticalLabelPosition=top;labelPosition=center;verticalAlign=bottom;" parent="1" vertex="1">
-            <mxGeometry x="230" y="300" width="120" height="100" as="geometry" />
+            <mxGeometry x="2000" y="1350" width="120" height="100" as="geometry" />
           </mxCell>
         </object>
         <object label="sclk" id="sclk">
           <mxCell style="shape=mxgraph.electrical.logic_gates.buffer2;align=center;spacingLeft=22;verticalLabelPosition=top;labelPosition=center;verticalAlign=bottom;" parent="1" vertex="1">
-            <mxGeometry x="220" y="780" width="120" height="100" as="geometry" />
+            <mxGeometry x="2200" y="1500" width="120" height="100" as="geometry" />
           </mxCell>
         </object>
         <object label="cpol" id="cpol">
           <mxCell style="shape=mxgraph.electrical.logic_gates.buffer2;align=center;spacingLeft=22;verticalLabelPosition=top;labelPosition=center;verticalAlign=bottom;" parent="1" vertex="1">
-            <mxGeometry x="220" y="880" width="120" height="100" as="geometry" />
+            <mxGeometry x="2400" y="1650" width="120" height="100" as="geometry" />
           </mxCell>
         </object>
         <object label="cpha" id="cpha">
           <mxCell style="shape=mxgraph.electrical.logic_gates.buffer2;align=center;spacingLeft=22;verticalLabelPosition=top;labelPosition=center;verticalAlign=bottom;" parent="1" vertex="1">
-            <mxGeometry x="220" y="680" width="120" height="100" as="geometry" />
+            <mxGeometry x="2600" y="1800" width="120" height="100" as="geometry" />
           </mxCell>
         </object>
         <object label="axis_m_data" id="axis_m_data">
           <mxCell style="shape=mxgraph.electrical.logic_gates.buffer2;align=center;spacingLeft=22;verticalLabelPosition=top;labelPosition=center;verticalAlign=bottom;" parent="1" vertex="1">
-            <mxGeometry x="1370" y="620" width="120" height="100" as="geometry" />
+            <mxGeometry x="2800" y="1950" width="120" height="100" as="geometry" />
           </mxCell>
         </object>
         <object label="miso_o" id="miso_o">
           <mxCell style="shape=mxgraph.electrical.logic_gates.buffer2;align=center;spacingLeft=22;verticalLabelPosition=top;labelPosition=center;verticalAlign=bottom;" parent="1" vertex="1">
-            <mxGeometry x="790" y="1120" width="120" height="100" as="geometry" />
+            <mxGeometry x="3000" y="2100" width="120" height="100" as="geometry" />
           </mxCell>
         </object>
         <object label="OUTPUT" id="OUTPUT">
           <mxCell style="rounded=1;verticalLabelPosition=top;labelPosition=center;align=center;verticalAlign=bottom;" parent="1" vertex="1">
-            <mxGeometry x="1610" y="220" width="120" height="500" as="geometry" />
+            <mxGeometry x="3200" width="120" height="500" as="geometry" />
           </mxCell>
         </object>
         <object label="cs" id="d1316163a245df5332755e217ce2bb54">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="cs" target="p_syncronization" edge="1">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="390" y="350" />
-                <mxPoint x="390" y="450" />
-              </Array>
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="rst" id="a460d91dcd9eb0b6e6a8783e4cd0fe8c">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="rst" target="p_syncronization" edge="1">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="350" y="1280" />
-                <mxPoint x="350" y="1110" />
-                <mxPoint x="-110" y="1110" />
-              </Array>
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="sclk" id="4a57313a239d8653129891e41aa081ec">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="sclk" target="p_pol_process" edge="1">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="370" y="830" />
-                <mxPoint x="370" y="900" />
-              </Array>
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="rst" id="306bf4f454e1ee6661465b87e71a96e7">
@@ -127,11 +111,7 @@
         </object>
         <object label="cs" id="77860c09dd9e32e8774281c971c7711d">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="cs" target="p_pol_process" edge="1">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="570" y="350" />
-              </Array>
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="cpol" id="7024e21d46368bd4ee7b2687eee32dbe">
@@ -141,81 +121,42 @@
         </object>
         <object label="rst" id="6765d86b4b5b835927325f7a4dae492c">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="rst" target="p_pha_process" edge="1">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="1100" y="1280" />
-              </Array>
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="cpha" id="e2339d37011729c47a8420d4500ec2e0">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="cpha" target="p_pha_process" edge="1">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="940" y="730" />
-                <mxPoint x="940" y="230" />
-              </Array>
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="rising_edge_detect" id="cb77a611ee92128f03f542b3b87c0b95">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="p_pol_process" target="p_pha_process" edge="1">
-            <mxGeometry x="-0.4306" relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="1054" y="950" />
-              </Array>
-              <mxPoint as="offset" />
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="falling_edge_detect" id="bb749c76004439e5eddf920cd5f099ef">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="p_pol_process" target="p_pha_process" edge="1">
-            <mxGeometry x="-0.3973" relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="1010" y="930" />
-              </Array>
-              <mxPoint as="offset" />
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="mosi" id="21874558ec4410cb8b5a171dfb7619cf">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="mosi" target="p_mosi_DATA" edge="1">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="980" y="630" />
-                <mxPoint x="980" y="360" />
-              </Array>
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="rst" id="b4a7daf7c3135a212e3c92763b272a85">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="rst" target="p_mosi_DATA" edge="1">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="1100" y="1280" />
-                <mxPoint x="1100" y="380" />
-              </Array>
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="cs" id="f80c6ad3a4bdeaf505d51b6a9dd04d9f">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="cs" target="p_mosi_DATA" edge="1">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="1030" y="350" />
-                <mxPoint x="1030" y="350" />
-              </Array>
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="sclk_edge_pulse_mosi" id="ce5526dc0288ef4bc448b822dc9d2b8c">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="p_pha_process" target="p_mosi_DATA" edge="1">
-            <mxGeometry x="0.2157" relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="1070" y="330" />
-              </Array>
-              <mxPoint as="offset" />
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="rst" id="6817dabe4b9c76f854449439e03634a9">
@@ -225,72 +166,37 @@
         </object>
         <object label="t_data_axi_read" id="e408ba3f35d171e9e91b9e029e194aef">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="p_read_axistream" target="p_miso_DATA" edge="1">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="405" y="120" />
-                <mxPoint x="405" y="190" />
-              </Array>
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="rst" id="5cee54b8f3e08427db1d8956dcf2f294">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="rst" target="p_miso_DATA" edge="1">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="440" y="1280" />
-                <mxPoint x="440" y="230" />
-              </Array>
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="cs" id="5605c6e47c93ca762a65f8d2841244c3">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="cs" target="p_miso_DATA" edge="1">
-            <mxGeometry x="0.1765" relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="380" y="350" />
-                <mxPoint x="380" y="210" />
-              </Array>
-              <mxPoint as="offset" />
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="cpha" id="71a887faefdfcc3562fef97e9305c86f">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="cpha" target="p_miso_DATA" edge="1">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="410" y="730" />
-                <mxPoint x="410" y="220" />
-              </Array>
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="rising_edge_detect" id="8388429aab44ade1fab3de36d85d6d8a">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="p_pol_process" target="p_miso_DATA" edge="1">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="520" y="310" />
-                <mxPoint x="610" y="310" />
-              </Array>
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="falling_edge_detect" id="e25705cbc6c878ef1fce15a1fb3eefd9">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="p_pol_process" target="p_miso_DATA" edge="1">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="490" y="240" />
-              </Array>
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="cs_last" id="7605b8e5534e1dfc9849d281dfbe1dc9">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="p_syncronization" target="p_miso_DATA" edge="1">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="180" y="430" />
-                <mxPoint x="180" y="200" />
-              </Array>
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="sclk_edge_pulse_miso" id="003f85db83cdf9531927a05ee530364b">
@@ -300,104 +206,55 @@
         </object>
         <object label="rst" id="4dfc5cb1cfa100fd1786f4b339d47942">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="rst" target="p_read_axistream" edge="1">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="350" y="1280" />
-                <mxPoint x="350" y="1110" />
-                <mxPoint x="110" y="1110" />
-                <mxPoint x="110" y="140" />
-              </Array>
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="mosi_sync(1)" id="fe2b1769b14f93b6abf37956bdf4f6e5">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="p_syncronization" target="mosi" edge="1">
-            <mxGeometry x="0.1364" relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="-70" y="630" />
-              </Array>
-              <mxPoint as="offset" />
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="cs_sync(1)" id="61305aef1782bdf753fc4dbbee89dc22">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="p_syncronization" target="cs" edge="1">
-            <mxGeometry x="0.697" relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="150" y="400" />
-                <mxPoint x="150" y="350" />
-              </Array>
-              <mxPoint as="offset" />
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="sclk_sync(1)" id="4a1570a09fb213ae478f243d6638bde6">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="p_syncronization" target="sclk" edge="1">
-            <mxGeometry x="0.3208" relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="-80" y="830" />
-              </Array>
-              <mxPoint as="offset" />
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="cpol_sync(1)" id="eb8376f07116aaa3c71a57a776a7b66c">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="p_syncronization" target="cpol" edge="1">
-            <mxGeometry x="0.52" relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="-100" y="930" />
-              </Array>
-              <mxPoint as="offset" />
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="cpha_sync(1)" id="84962a85422938069d863af68bc0f177">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="p_syncronization" target="cpha" edge="1">
-            <mxGeometry x="0.4375" relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="-90" y="730" />
-              </Array>
-              <mxPoint as="offset" />
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="t_data_mosi" id="997be8a20d890a9cd0c33d213f812c62">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="p_set_data_out" target="axis_m_data" edge="1">
-            <mxGeometry x="0.6975" relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="1200" y="550" />
-                <mxPoint x="1200" y="640" />
-              </Array>
-              <mxPoint as="offset" />
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="axis_m_valid" id="87a4b8f1e7aed84a447b07ca59985fb4">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="p_set_data_out" target="axis_m_data" edge="1">
-            <mxGeometry x="0.68" relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="1180" y="570" />
-                <mxPoint x="1180" y="670" />
-              </Array>
-              <mxPoint as="offset" />
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="cs" id="d35a4320c0f34d2bc227c5cd10be15df">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="cs" target="miso_o" edge="1">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="820" y="350" />
-              </Array>
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="sclk_o" id="d482444ba239551a11dbad62e490ffe0">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="INPUT" target="p_syncronization" edge="1">
             <mxGeometry relative="1" as="geometry">
               <Array as="points">
-                <mxPoint x="-270" y="410" />
-                <mxPoint x="-270" y="410" />
+                <mxPoint x="210" y="80" />
+                <mxPoint x="210" y="80" />
               </Array>
             </mxGeometry>
           </mxCell>
@@ -406,8 +263,8 @@
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="INPUT" target="p_syncronization" edge="1">
             <mxGeometry relative="1" as="geometry">
               <Array as="points">
-                <mxPoint x="-270" y="390" />
-                <mxPoint x="-270" y="390" />
+                <mxPoint x="210" y="60" />
+                <mxPoint x="210" y="60" />
               </Array>
             </mxGeometry>
           </mxCell>
@@ -416,8 +273,8 @@
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="INPUT" target="p_syncronization" edge="1">
             <mxGeometry relative="1" as="geometry">
               <Array as="points">
-                <mxPoint x="-270" y="430" />
-                <mxPoint x="-270" y="430" />
+                <mxPoint x="200" y="100" />
+                <mxPoint x="200" y="100" />
               </Array>
             </mxGeometry>
           </mxCell>
@@ -426,8 +283,8 @@
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="INPUT" target="p_syncronization" edge="1">
             <mxGeometry relative="1" as="geometry">
               <Array as="points">
-                <mxPoint x="-260" y="450" />
-                <mxPoint x="-260" y="450" />
+                <mxPoint x="200" y="40" />
+                <mxPoint x="200" y="40" />
               </Array>
             </mxGeometry>
           </mxCell>
@@ -436,50 +293,30 @@
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="INPUT" target="p_syncronization" edge="1">
             <mxGeometry relative="1" as="geometry">
               <Array as="points">
-                <mxPoint x="-310" y="470" />
-                <mxPoint x="-310" y="470" />
+                <mxPoint x="170" y="20" />
+                <mxPoint x="170" y="20" />
               </Array>
             </mxGeometry>
           </mxCell>
         </object>
         <object label="axis_m_ready" id="7d870c00e659bcf34ce162343b430414">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="INPUT" target="p_set_data_out" edge="1">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="-180" y="537" />
-                <mxPoint x="-180" y="537" />
-              </Array>
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="axis_s_data" id="3ab352c56e4403d6659ae3e9a6bfaf05">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="INPUT" target="p_read_axistream" edge="1">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="70" y="340" />
-                <mxPoint x="70" y="120" />
-              </Array>
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="axis_s_valid" id="ac4a04cde4e835af6352d21981f632d6">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="INPUT" target="p_read_axistream" edge="1">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="50" y="320" />
-                <mxPoint x="50" y="100" />
-              </Array>
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="rst_n_o" id="7aac55c36981ffe49f92674f227b7a03">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="INPUT" target="rst" edge="1">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="-210" y="630" />
-                <mxPoint x="-210" y="1280" />
-              </Array>
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="miso_o" id="90485480cf0ca74cce737f58557c5bf7">
@@ -489,22 +326,12 @@
         </object>
         <object label="axis_m_valid" id="d89c819653084d8dab7dde68193b28f2">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="p_set_data_out" target="OUTPUT" edge="1">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="1100" y="535" />
-                <mxPoint x="1100" y="535" />
-              </Array>
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="axis_m_data" id="3f1b45fed378ea6fb2a51ef122fcfc3b">
           <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" parent="1" source="axis_m_data" target="OUTPUT" edge="1">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="1480" y="670" />
-                <mxPoint x="1480" y="670" />
-              </Array>
-            </mxGeometry>
+            <mxGeometry relative="1" as="geometry" />
           </mxCell>
         </object>
         <object label="axis_s_ready" id="e8524da5181d585e32649f8245c85759">

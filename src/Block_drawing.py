@@ -32,10 +32,11 @@ class Block:
     return self.block_type
     
 class Wire:
-  def __init__(self, name, width):
+  def __init__(self, name, width, bit_width = 1):
     self.name = name
     self.width = width
-    
+    self.bit_width = bit_width
+
   def get_name(self):
     return self.name
   
@@ -50,11 +51,7 @@ def draw_diagram(diagram_name, blocks, wires):
   INPUT_BLOCK = blocks[0]
   OUTPUT_BLOCK = blocks[-1]
   
-
-
-  
   internal_blocks = blocks[1:-1]
-
 
   diagram = place_nodes(diagram, blocks)
 
@@ -66,14 +63,12 @@ def draw_diagram(diagram_name, blocks, wires):
   for block in internal_blocks:
     for signal in block.get_input_signals():
         diagram = draw_wire(diagram,block,INPUT_BLOCK,signal)
-
-
   
   for signal in OUTPUT_BLOCK.get_input_signals():
     for jdx, another_block in enumerate(internal_blocks):
       diagram = draw_wire(diagram,OUTPUT_BLOCK,another_block,signal)
 
-  diagram.layout(algo="lgl")
+  # diagram.layout(algo="lgl")
   diagram.dump_file(filename="DrawIO_diagram.drawio")
   return 0
 
@@ -89,13 +84,22 @@ def place_nodes(diagram,list_of_nodes):
       y_pos = 0
     else:
       node_height = 100
-    
+
+
     if node.get_block_type() == "not":
       diagram.add_node(id=node.get_name(), x_pos=x_pos, y_pos=y_pos,  style = inverter_style, height = node_height)
     elif node.get_block_type() == "buffer":
       diagram.add_node(id=node.get_name(), x_pos=x_pos, y_pos=y_pos,  style = buffer_style, height = node_height)
     else:
       diagram.add_node(id=node.get_name(), x_pos=x_pos, y_pos=y_pos,  style = normal_style, height = node_height)
+
+    if idx == 0 or idx == len(list_of_nodes)-2:
+      x_pos += 200
+    else:
+      x_pos += 200
+      y_pos += 150
+      
+    
 
   return diagram
   
