@@ -1,57 +1,17 @@
-<mxfile host="65bd71144e" compressed="false">
+<mxfile type="device" compressed="false">
     <diagram id="entity" name="entity">
-        <mxGraphModel dx="272" dy="590" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="1">
-            <root>
-                <mxCell id="0"/>
-                <mxCell id="1" parent="0"/>
-                <object label="INPUT" id="INPUT">
-                    <mxCell style="rounded=1" parent="1" vertex="1">
-                        <mxGeometry width="120" height="300" as="geometry"/>
-                    </mxCell>
-                </object>
-                <object label="Process_0" id="Process_0">
-                    <mxCell style="rounded=1" parent="1" vertex="1">
-                        <mxGeometry x="210" y="100" width="120" height="100" as="geometry"/>
-                    </mxCell>
-                </object>
-                <object label="D_out" id="D_out">
-                    <mxCell style="shape=mxgraph.electrical.logic_gates.buffer2;align=left;spacingLeft=25;" parent="1" vertex="1">
-                        <mxGeometry x="400" y="100" width="120" height="100" as="geometry"/>
-                    </mxCell>
-                </object>
-                <object label="OUTPUT" id="OUTPUT">
-                    <mxCell style="rounded=1" parent="1" vertex="1">
-                        <mxGeometry x="600" width="120" height="300" as="geometry"/>
-                    </mxCell>
-                </object>
-                <object label="D_in" id="b3ddeb1e28493fcdb70baa9a8a1b4a73">
-                    <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="INPUT" target="Process_0" edge="1">
-                        <mxGeometry x="0.2727" relative="1" as="geometry">
-                            <Array as="points">
-                                <mxPoint x="130" y="130"/>
-                                <mxPoint x="130" y="130"/>
-                            </Array>
-                            <mxPoint as="offset"/>
-                        </mxGeometry>
-                    </mxCell>
-                </object>
-                <object label="rst" id="69272cc050f928c81408767927a5b2cf">
-                    <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" source="INPUT" target="Process_0" edge="1">
-                        <mxGeometry x="0.2727" relative="1" as="geometry">
-                            <Array as="points">
-                                <mxPoint x="130" y="170"/>
-                                <mxPoint x="130" y="170"/>
-                            </Array>
-                            <mxPoint as="offset"/>
-                        </mxGeometry>
-                    </mxCell>
-                </object>
-                <object label="D_out" id="d80d79027259ca9124f513afe77de930">
-                    <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="D_out" target="OUTPUT" edge="1">
-                        <mxGeometry relative="1" as="geometry"/>
-                    </mxCell>
-                </object>
-            </root>
-        </mxGraphModel>
-    </diagram>
-</mxfile>
+      <mxGraphModel dx="1360" dy="864" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="1">
+        <root>
+          <mxCell id="0" />   
+          <mxCell id="1" parent="0" />
+        <object id="INPUT" label="INPUT">
+      <mxCell style="rounded=1" vertex="1" parent="1">
+          <mxGeometry x="0" y="0" width="120" height="100" as="geometry" />
+      </mxCell>
+    </object><object id="OUTPUT" label="OUTPUT">
+      <mxCell style="rounded=1" vertex="1" parent="1">
+          <mxGeometry x="200" y="0" width="120" height="100" as="geometry" />
+      </mxCell>
+    </object></root>
+      </mxGraphModel>
+    </diagram></mxfile>

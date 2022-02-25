@@ -135,104 +135,152 @@ def find_processes(content):
     list_of_inline_processes = []
     current_process = None
     process_started = False
-    inside_procedure = False
     procedure_started = False
+    inside_process = False
+    inside_procedure = False
+    procedure_string = []
+    process_string = []
     p_idx = 0
+    procedure_idx = 0
+    
     for line in content:
 
-        if current_process == None:
-            process_started = False
+        if "process" in line:
+            inside_process = True
+            process_string.append("")
 
-        
-        if " process " in line and "end" not in line:
-            try:
-                end_process_name = line.index(":")
-                process_name = line[0:end_process_name].replace(" ", "").replace("\t", "")
-            except ValueError:
-                process_name = "Process_"+str(p_idx)
-                p_idx+=1
-            
-            current_process = Process(process_name)
-            sensitivity_signals = find_sensitivity_signals(line)
-            for signal in sensitivity_signals:
-                current_process.set_sensitivity_signal(signal)
-
-        # Procedure detection
-        if " procedure " in line:
+        if "procedure" in line:
             inside_procedure = True
-        if " end procedure" in line:
+            procedure_string.append("")
+
+        if inside_procedure:
+            procedure_string[procedure_idx] += line
+        elif inside_process:    
+            process_string[p_idx] += line
+
+        if "end procedure" in line:
             inside_procedure = False
-            procedure_started = False
-
-        if "begin" in line:
-            if inside_procedure:
-                procedure_started = True
-            else:
-                process_started = True
-
-        if " if " in line and process_started == True:
-          if_start = line.find("if")
-          line_splitted = line[if_start:].split(" ")
-          multiple_lines = []
-          if "and" in line_splitted or "or" in line_splitted:
-            split_idx = []
-            for idx,item in enumerate(line_splitted):
-              if item == "and" or item == "or":
-                split_idx.append(idx)
-
-
-            last_idx = 0
-            for idx in split_idx:
-
-              multiple_lines.append(line_splitted[last_idx+1:idx])
-              last_idx = idx
-            multiple_lines.append(line_splitted[last_idx+1:])
-
-          else:
-            multiple_lines.append(line_splitted)
-
-          for multiple_line_splitted in multiple_lines:
-            if "=" in multiple_line_splitted:
-              equal_idx = multiple_line_splitted.index("=")
-              first_signal = multiple_line_splitted[equal_idx-1].replace("(","")
-              second_signal = multiple_line_splitted[equal_idx+1].replace(")","")
-              current_process.set_input_signals(first_signal)
-              current_process.set_input_signals(second_signal)
-
-          if "rising_edge" in line:
-            bracket_start = line.find("(")+1
-            bracket_end = line.find(")")
-            signal = line[bracket_start:bracket_end]
-            current_process.set_input_signals(signal)
-
-        if " variable " in line and current_process != None:
-            variable_declaration = line.split(": ")
-            variable_name = variable_declaration[0].split(" variable ")[1].replace(" ", "")
-            variable_type = variable_declaration[1].split(":=")
-            variable_value = None
-
-            if len(variable_type) > 1:
-                variable_value = variable_type[1].replace(" ", "")
-
-            current_process.set_internal_variable(variable_name, value=variable_value, variable_type=variable_type[0].replace("; ", ""))
-
-        if " := " in line and process_started == True:
-            target_variable = line.split(":=")[0].replace("\t","").replace(" ", "")
-            target_value = line.split(":=")[1].replace("\n", "").replace(";","").replace(" ", "")
-            current_process.set_internal_variable(target_variable, value=target_value)
-
-        if " <= " in line:
-          if process_started  or procedure_started:
-            target_signal = line.split("<=")[0].replace("\t","").replace(" ", "")
-            value = line.split("<=")[1].replace("\n", "").replace(";","").replace(" ", "")
-            
-            current_process.set_assigned_signal(target_signal, value)
-          elif not inside_procedure:
-            list_of_inline_processes.append(define_inline_process(line))
+            procedure_idx += 1
 
         if "end process" in line:
-            list_of_prosesses.append(current_process)
-            current_process = None
+            inside_process = False
+            p_idx += 1
+
+    for idx,process in enumerate(process_string):
+        process_name_pattern = re.compile(r"(?P<process_name>\w+)\s*:\s*process")
+        if re.search(process_name_pattern,process) == None:
+            process_name = "Process_"+str(idx)
+            current_process = Process(process_name)
+        else:
+            process_name_iter = re.finditer(process_name_pattern,process)
+            for p_name in process_name_iter:
+                process_name = p_name.group("process_name")
+                current_process = Process(process_name)
+        
+        signal_pattern = re.compile(r"(?P<signal_name>\w+)\s*<=\s*")
+        signal_iter = re.finditer(signal_pattern,process)
+        for signal in signal_iter:
+            signal_name = signal.group("signal_name")
+            
+
+
+
+
+    
+
+        # if current_process == None:
+        #     process_started = False
+
+        
+        # if " process " in line and "end" not in line:
+        #     try:
+        #         end_process_name = line.index(":")
+        #         process_name = line[0:end_process_name].replace(" ", "").replace("\t", "")
+        #     except ValueError:
+        #         process_name = "Process_"+str(p_idx)
+        #         p_idx+=1
+            
+        #     current_process = Process(process_name)
+        #     sensitivity_signals = find_sensitivity_signals(line)
+        #     for signal in sensitivity_signals:
+        #         current_process.set_sensitivity_signal(signal)
+
+        # # Procedure detection
+        # if " procedure " in line:
+        #     inside_procedure = True
+        # if " end procedure" in line:
+        #     inside_procedure = False
+        #     procedure_started = False
+
+        # if "begin" in line:
+        #     if inside_procedure:
+        #         procedure_started = True
+        #     else:
+        #         process_started = True
+
+        # if " if " in line and process_started == True:
+        #   if_start = line.find("if")
+        #   line_splitted = line[if_start:].split(" ")
+        #   multiple_lines = []
+        #   if "and" in line_splitted or "or" in line_splitted:
+        #     split_idx = []
+        #     for idx,item in enumerate(line_splitted):
+        #       if item == "and" or item == "or":
+        #         split_idx.append(idx)
+
+
+        #     last_idx = 0
+        #     for idx in split_idx:
+
+        #       multiple_lines.append(line_splitted[last_idx+1:idx])
+        #       last_idx = idx
+        #     multiple_lines.append(line_splitted[last_idx+1:])
+
+        #   else:
+        #     multiple_lines.append(line_splitted)
+
+        #   for multiple_line_splitted in multiple_lines:
+        #     if "=" in multiple_line_splitted:
+        #       equal_idx = multiple_line_splitted.index("=")
+        #       first_signal = multiple_line_splitted[equal_idx-1].replace("(","")
+        #       second_signal = multiple_line_splitted[equal_idx+1].replace(")","")
+        #       current_process.set_input_signals(first_signal)
+        #       current_process.set_input_signals(second_signal)
+
+        #   if "rising_edge" in line:
+        #     bracket_start = line.find("(")+1
+        #     bracket_end = line.find(")")
+        #     signal = line[bracket_start:bracket_end]
+        #     current_process.set_input_signals(signal)
+
+        # if " variable " in line and current_process != None:
+        #     variable_declaration = line.split(": ")
+        #     variable_name = variable_declaration[0].split(" variable ")[1].replace(" ", "")
+        #     variable_type = variable_declaration[1].split(":=")
+        #     variable_value = None
+
+        #     if len(variable_type) > 1:
+        #         variable_value = variable_type[1].replace(" ", "")
+
+        #     current_process.set_internal_variable(variable_name, value=variable_value, variable_type=variable_type[0].replace("; ", ""))
+
+        # if " := " in line and process_started == True:
+        #     target_variable = line.split(":=")[0].replace("\t","").replace(" ", "")
+        #     target_value = line.split(":=")[1].replace("\n", "").replace(";","").replace(" ", "")
+        #     current_process.set_internal_variable(target_variable, value=target_value)
+
+        # if " <= " in line:
+        #   if process_started  or procedure_started:
+        #     target_signal = line.split("<=")[0].replace("\t","").replace(" ", "")
+        #     value = line.split("<=")[1].replace("\n", "").replace(";","").replace(" ", "")
+            
+        #     current_process.set_assigned_signal(target_signal, value)
+        #   elif not inside_procedure:
+        #     list_of_inline_processes.append(define_inline_process(line))
+
+        # if "end process" in line:
+        #     list_of_prosesses.append(current_process)
+        #     current_process = None
 
     list_of_prosesses = list_of_prosesses+list_of_inline_processes
     return list_of_prosesses
@@ -331,20 +379,34 @@ def print_all(entity,processes):
         for assigned_signal in process.get_assigned_signals():
             print("    ", assigned_signal, ":", process.get_assigned_signals()[assigned_signal])
 
-
-def main(filename):
-
+def import_file_and_remove_comments(filename):
     try:
         file_content, path = importfile(filename)
     except:
         return 1
 
     file_content = remove_comments(file_content)
+    return file_content
 
-    entity = find_entity_with_signals(file_content)
+def main(filename):
+
+    file_content_body = import_file_and_remove_comments(filename)
+
+    entity = find_entity_with_signals(file_content_body)
+    
+    if entity== None:
+        try:
+            file_content_entity, path = importfile(filename)
+        except:
+            return 1
+        file_content_entity = remove_comments(file_content_entity)
+        entity = find_entity_with_signals(file_content_entity)
+
+    file_content = remove_comments(file_content_body)
+
     entity = find_internal_signals(file_content,entity)
     processes = find_processes(file_content)
-    #print_all(entity,processes)
+    # print_all(entity,processes)
     block_list = sort_system(entity,processes)
     if block_list != 1:
       draw_diagram(entity.get_name(),block_list,None)
