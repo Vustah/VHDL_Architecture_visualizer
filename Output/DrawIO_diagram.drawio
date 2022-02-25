@@ -1,335 +1,57 @@
-<mxfile compressed="false" host="Electron" modified="2021-11-02T11:37:23.382Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/15.4.0 Chrome/91.0.4472.164 Electron/13.5.0 Safari/537.36" version="15.4.0" etag="MUNZQKAVMIp6G2i9aRk4" type="device">
-  <diagram id="spi_slave" name="spi_slave">
-    <mxGraphModel dx="1718" dy="985" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="1">
-      <root>
-        <mxCell id="0" />
-        <mxCell id="1" parent="0" />
-        <object label="INPUT" id="INPUT">
-          <mxCell style="rounded=1" parent="1" vertex="1">
-            <mxGeometry width="120" height="1650" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="p_syncronization" id="p_syncronization">
-          <mxCell style="rounded=1" parent="1" vertex="1">
-            <mxGeometry x="200" width="120" height="100" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="p_pol_process" id="p_pol_process">
-          <mxCell style="rounded=1" parent="1" vertex="1">
-            <mxGeometry x="400" y="150" width="120" height="100" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="p_pha_process" id="p_pha_process">
-          <mxCell style="rounded=1" parent="1" vertex="1">
-            <mxGeometry x="600" y="300" width="120" height="100" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="p_mosi_DATA" id="p_mosi_DATA">
-          <mxCell style="rounded=1" parent="1" vertex="1">
-            <mxGeometry x="800" y="450" width="120" height="100" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="p_set_data_inut" id="p_set_data_inut">
-          <mxCell style="rounded=1" parent="1" vertex="1">
-            <mxGeometry x="1000" y="600" width="120" height="100" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="p_miso_DATA" id="p_miso_DATA">
-          <mxCell style="rounded=1" parent="1" vertex="1">
-            <mxGeometry x="1200" y="750" width="120" height="100" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="p_read_axistream" id="p_read_axistream">
-          <mxCell style="rounded=1" parent="1" vertex="1">
-            <mxGeometry x="1400" y="900" width="120" height="100" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="rst" id="rst">
-          <mxCell style="shape=mxgraph.electrical.logic_gates.inverter_2;align=left;spacingLeft=25;" parent="1" vertex="1">
-            <mxGeometry x="1600" y="1050" width="120" height="100" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="cs" id="cs">
-          <mxCell style="shape=mxgraph.electrical.logic_gates.inverter_2;align=left;spacingLeft=25;" parent="1" vertex="1">
-            <mxGeometry x="1800" y="1200" width="120" height="100" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="tx_data" id="tx_data">
-          <mxCell style="shape=mxgraph.electrical.logic_gates.buffer2;align=left;spacingLeft=25;" parent="1" vertex="1">
-            <mxGeometry x="2000" y="1350" width="120" height="100" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="miso_out" id="miso_out">
-          <mxCell style="shape=mxgraph.electrical.logic_gates.buffer2;align=left;spacingLeft=25;" parent="1" vertex="1">
-            <mxGeometry x="2200" y="1500" width="120" height="100" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="OUTPUT" id="OUTPUT">
-          <mxCell style="rounded=1" parent="1" vertex="1">
-            <mxGeometry x="2400" width="120" height="1650" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="cs" id="d1316163a245df5332755e217ce2bb54">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="cs" target="p_syncronization" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="rst" id="a460d91dcd9eb0b6e6a8783e4cd0fe8c">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" source="rst" target="p_syncronization" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="sclk" id="31297005cd2777411cd29e04672f17ab">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" source="p_syncronization" target="p_pol_process" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="rst" id="306bf4f454e1ee6661465b87e71a96e7">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" source="rst" target="p_pol_process" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="cs" id="77860c09dd9e32e8774281c971c7711d">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="cs" target="p_pol_process" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="cpol" id="5ed39e9ed58984da675339476612df4a">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="p_syncronization" target="p_pol_process" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="rst" id="6765d86b4b5b835927325f7a4dae492c">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" source="rst" target="p_pha_process" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="cpha" id="e1b9087c55dbd9df58f3ecd190efae5b">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="p_syncronization" target="p_pha_process" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="rising_edge_detect" id="cb77a611ee92128f03f542b3b87c0b95">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="p_pol_process" target="p_pha_process" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="falling_edge_detect" id="bb749c76004439e5eddf920cd5f099ef">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="p_pol_process" target="p_pha_process" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="mosi" id="06220997ab4acf1b2c6efe047a7f1db3">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="p_syncronization" target="p_mosi_DATA" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="rst" id="b4a7daf7c3135a212e3c92763b272a85">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" source="rst" target="p_mosi_DATA" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="cs" id="f80c6ad3a4bdeaf505d51b6a9dd04d9f">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="cs" target="p_mosi_DATA" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="sclk_edge_pulse_mosi" id="ce5526dc0288ef4bc448b822dc9d2b8c">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" source="p_pha_process" target="p_mosi_DATA" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="tx_data_mosi_new" id="ceb010006550d7afa2fcf1e46974e294">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="p_mosi_DATA" target="p_set_data_inut" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="rst" id="a1c9b6bb40104f334d1a8a780d0dea4d">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" source="rst" target="p_set_data_inut" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="t_data_axi_read" id="e408ba3f35d171e9e91b9e029e194aef">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="p_read_axistream" target="p_miso_DATA" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="tx_data_mosi_new" id="b1ca6d16d9ce1ebdbf1b087c963c2ca4">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="p_mosi_DATA" target="p_miso_DATA" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="rst" id="5cee54b8f3e08427db1d8956dcf2f294">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" source="rst" target="p_miso_DATA" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="cs" id="5605c6e47c93ca762a65f8d2841244c3">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="cs" target="p_miso_DATA" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="cpha" id="670842185a7c3ff37746aa0053e426b8">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="p_syncronization" target="p_miso_DATA" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="rising_edge_detect" id="8388429aab44ade1fab3de36d85d6d8a">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="p_pol_process" target="p_miso_DATA" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="falling_edge_detect" id="e25705cbc6c878ef1fce15a1fb3eefd9">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="p_pol_process" target="p_miso_DATA" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="cs_last" id="7605b8e5534e1dfc9849d281dfbe1dc9">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="p_syncronization" target="p_miso_DATA" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="sclk_edge_pulse_miso" id="003f85db83cdf9531927a05ee530364b">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" source="p_pha_process" target="p_miso_DATA" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="rst" id="4dfc5cb1cfa100fd1786f4b339d47942">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" source="rst" target="p_read_axistream" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="cs_sync(1)" id="61305aef1782bdf753fc4dbbee89dc22">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="p_syncronization" target="cs" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="tx_data_mosi" id="779fd96a8ba13d20497742849361b6cf">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="p_set_data_inut" target="tx_data" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="tx_vld" id="137599590224f19d1d8e85d54b20aad2">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="p_set_data_inut" target="tx_data" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="miso" id="d1fdd609099af204d4e8448475d88e3c">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="p_miso_DATA" target="miso_out" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="cs" id="0c52da9621473e8a59cef71386cfb0f3">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="cs" target="miso_out" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="sclk_in" id="25a806c7630010aba8547c2d76abbfc0">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" source="INPUT" target="p_syncronization" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="mosi_in" id="619a1de67dd8d5e4c6d87ef7293c8774">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="INPUT" target="p_syncronization" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="cpol_in" id="f0fa5e318c02c0e42f0db4c189459cdc">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="INPUT" target="p_syncronization" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="cpha_in" id="70c3d0bd6195ea74d521aef863829c41">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="INPUT" target="p_syncronization" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="cs_n_in" id="331ea49ede971aef1d4445162fc3354a">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="INPUT" target="p_syncronization" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="clk" id="b1bc0d335c1c8a9bbf23a6bfa0e068b9">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" source="INPUT" target="p_syncronization" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="clk" id="9a522368fa66b15cf038fc00661d2dc2">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" source="INPUT" target="p_pol_process" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="clk" id="f3e19823017da50ca4417ac8acf78d05">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" source="INPUT" target="p_pha_process" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="clk" id="626c4461c12d2ae5425ed92af58811d1">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" source="INPUT" target="p_mosi_DATA" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="clk" id="760986c8c79328335bb452f73bc7073c">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" source="INPUT" target="p_set_data_inut" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="tx_rdy" id="51c692d343b2b9d7fbe85d0447c1b52a">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="INPUT" target="p_set_data_inut" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="clk" id="3b8b12dd37a176a2d6b927134b1c7c22">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" source="INPUT" target="p_miso_DATA" edge="1">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="660" y="825" />
-                <mxPoint x="660" y="820" />
-              </Array>
-            </mxGeometry>
-          </mxCell>
-        </object>
-        <object label="rx_data" id="60563a1e5b5d38e1baa8b329375a3e49">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="INPUT" target="p_read_axistream" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="clk" id="ef5a5521ec1be6d3ce75852c32b5b1c9">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" source="INPUT" target="p_read_axistream" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="rx_vld" id="792e9c74576a45292158a4f5e3a9c5a9">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="INPUT" target="p_read_axistream" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="rst_n_in" id="7c6ee098a5e2cc65f98df39319dd4e18">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" source="INPUT" target="rst" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="miso_out" id="9c97fc77b32d1c635af7e44251f2d5a4">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="miso_out" target="OUTPUT" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="tx_vld" id="7af4c383c5965068abae3d6a4f318f98">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="p_set_data_inut" target="OUTPUT" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="tx_data" id="02f795eed0c1e20afbdec6c2de38685a">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="tx_data" target="OUTPUT" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-        <object label="rx_rdy" id="f8c720f5f74cc8bf66df2b7768ae6567">
-          <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="p_read_axistream" target="OUTPUT" edge="1">
-            <mxGeometry relative="1" as="geometry" />
-          </mxCell>
-        </object>
-      </root>
-    </mxGraphModel>
-  </diagram>
+<mxfile host="65bd71144e" compressed="false">
+    <diagram id="entity" name="entity">
+        <mxGraphModel dx="272" dy="590" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="1">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <object label="INPUT" id="INPUT">
+                    <mxCell style="rounded=1" parent="1" vertex="1">
+                        <mxGeometry width="120" height="300" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="Process_0" id="Process_0">
+                    <mxCell style="rounded=1" parent="1" vertex="1">
+                        <mxGeometry x="210" y="100" width="120" height="100" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="D_out" id="D_out">
+                    <mxCell style="shape=mxgraph.electrical.logic_gates.buffer2;align=left;spacingLeft=25;" parent="1" vertex="1">
+                        <mxGeometry x="400" y="100" width="120" height="100" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="OUTPUT" id="OUTPUT">
+                    <mxCell style="rounded=1" parent="1" vertex="1">
+                        <mxGeometry x="600" width="120" height="300" as="geometry"/>
+                    </mxCell>
+                </object>
+                <object label="D_in" id="b3ddeb1e28493fcdb70baa9a8a1b4a73">
+                    <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="INPUT" target="Process_0" edge="1">
+                        <mxGeometry x="0.2727" relative="1" as="geometry">
+                            <Array as="points">
+                                <mxPoint x="130" y="130"/>
+                                <mxPoint x="130" y="130"/>
+                            </Array>
+                            <mxPoint as="offset"/>
+                        </mxGeometry>
+                    </mxCell>
+                </object>
+                <object label="rst" id="69272cc050f928c81408767927a5b2cf">
+                    <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" source="INPUT" target="Process_0" edge="1">
+                        <mxGeometry x="0.2727" relative="1" as="geometry">
+                            <Array as="points">
+                                <mxPoint x="130" y="170"/>
+                                <mxPoint x="130" y="170"/>
+                            </Array>
+                            <mxPoint as="offset"/>
+                        </mxGeometry>
+                    </mxCell>
+                </object>
+                <object label="D_out" id="d80d79027259ca9124f513afe77de930">
+                    <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" parent="1" source="D_out" target="OUTPUT" edge="1">
+                        <mxGeometry relative="1" as="geometry"/>
+                    </mxCell>
+                </object>
+            </root>
+        </mxGraphModel>
+    </diagram>
 </mxfile>

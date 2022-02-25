@@ -6,7 +6,7 @@ from Process import Process,Inline_process
 from Procedure import Procedure
 from Component import Component
 from Block_drawing import Block, Wire, draw_diagram
-
+import re
 
 def find_path(filename):
     path_end = filename.rfind("/")
@@ -65,51 +65,61 @@ def sort_system(entity, processes):
 
   return block_list
 
+
+
 def find_entity_with_signals(content):
     entity = None
     entity_name = ""
+    entity_string = ""
     inside_entity_declaration = False
 
     for line in content:
-        line = line.replace(";", "").replace("\t", "  ").replace("\n", "")
         if "entity" in line:
             entity_name = line.split(" ")[1]
             entity = Entity(entity_name)
             inside_entity_declaration = True
-
-
-        if " in " in line and inside_entity_declaration:
-            line = line.replace("port(", "")
-            signal_name = line.split(" in ")[0].replace(":", "").replace(" ", "")
-            signal_type = line.split(" in ")[1].replace(":", "")
-            entity.set_input_signals(input_signal_name=signal_name,input_signal_type=signal_type)
-
-
-        if " out " in line and inside_entity_declaration:
-            line = line.replace("port(", "")
-            signal_name = line.split(" out ")[0].replace(":", "").replace(" ", "")
-            signal_type = line.split(" out ")[1].replace(":", "")
-            entity.set_output_signals(output_signal_name=signal_name,output_signal_type=signal_type)
-
+            
+        if inside_entity_declaration:
+            entity_string+= line
 
         if ("end " + entity_name) in line:
             inside_entity_declaration = False
+            break
+    
+    input_compiled = re.compile(r"(?P<input>\w+)\s*:\s*in\s(?P<type>\w+)") 
+    output_compiled = re.compile(r"(?P<output>\w+)\s*:\s*out\s(?P<type>\w+)") 
 
+    input_signals = re.finditer(input_compiled,entity_string)
+    output_signals = re.finditer(output_compiled,entity_string)
+
+    for signal in input_signals:
+        input_signal_name,input_signal_type = signal.group("input","type")
+        entity.set_input_signals(input_signal_name=input_signal_name,input_signal_type=input_signal_type)
+    for signal in output_signals:
+        output_signal_name,output_signal_type = signal.group("output","type")
+        entity.set_output_signals(output_signal_name=output_signal_name, output_signal_type=output_signal_type)
+    
     return entity
 
 def find_internal_signals(content,entity = None):
     if entity == None:
         entity = find_entity_with_signals(content)
+    
+    architecture_string = "" 
+    inside_architecture = False
     for line in content:
-        if " signal " in line:
-
-            signal_declaration = line.split(": ")
-            signal_name = signal_declaration[0].split(" signal ")[1].replace(" ","")
-            signal_type = signal_declaration[1].split(":=")
-            signal_value = None
-            if len(signal_type) > 1:
-                signal_value = signal_type[1].replace(" ","")
-            entity.set_internal_signals(signal_name, signal_type[0].replace("; ", ""), signal_value)
+        if "architecture" in line:
+            inside_architecture = True
+        if inside_architecture:
+            architecture_string += line
+        if "end architecture" in line:
+            break
+            
+    signal_pattern = re.compile(r"\s*signal\s+(?P<signal_name>\w+)\s+:\s+(?P<signal_type>\w+)")
+    signal_declaration = re.finditer(signal_pattern,architecture_string)
+    for signal in signal_declaration:
+        signal_name,signal_type = signal.group("signal_name","signal_type")
+        entity.set_internal_signals(internal_signal_name=signal_name, internal_signal_type=signal_type)
     return entity
 
 def find_sensitivity_signals(process_line):
@@ -127,14 +137,21 @@ def find_processes(content):
     process_started = False
     inside_procedure = False
     procedure_started = False
+    p_idx = 0
     for line in content:
 
         if current_process == None:
             process_started = False
 
+        
         if " process " in line and "end" not in line:
-            end_process_name = line.index(":")
-            process_name = line[0:end_process_name].replace(" ", "").replace("\t", "")
+            try:
+                end_process_name = line.index(":")
+                process_name = line[0:end_process_name].replace(" ", "").replace("\t", "")
+            except ValueError:
+                process_name = "Process_"+str(p_idx)
+                p_idx+=1
+            
             current_process = Process(process_name)
             sensitivity_signals = find_sensitivity_signals(line)
             for signal in sensitivity_signals:
@@ -187,7 +204,6 @@ def find_processes(content):
             bracket_end = line.find(")")
             signal = line[bracket_start:bracket_end]
             current_process.set_input_signals(signal)
-          # print(line_splitted)
 
         if " variable " in line and current_process != None:
             variable_declaration = line.split(": ")
@@ -245,13 +261,12 @@ def define_inline_process(line):
     if "not" in value_list:
       buffer_type = "not"
     value = value_list[-1]
-    # print(target_signal,value)
   else:
     if "when" in value_list:
       value = value_list[0]
       second_value = value_list[-1]
       trigger_signal = value_list[2]
-    # print(target_signal,"<=",value," or ", second_value,"if", trigger_signal)
+
 
   inline_process = Inline_process(target_signal)  
   inline_process.set_buffer_type(gate_type=buffer_type)
@@ -265,14 +280,15 @@ def define_inline_process(line):
 
   return inline_process
 
-
 def remove_comments(content):
-    no_comment_content = []
+    cleaned_content = []
     for line in content:
-        comment_line_idx = line.find("--")
-        line = line[0:comment_line_idx]
-        no_comment_content.append(line)
-    return no_comment_content
+        line = line.replace("(", "\(").replace(")", "\)").replace("\n","")
+        if re.match("^\s*--",line) == None:
+            cleaned_content.append(line)
+    
+    return cleaned_content
+
 
 def print_all(entity,processes):
     print(entity.get_name())
