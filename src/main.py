@@ -129,13 +129,38 @@ def find_sensitivity_signals(process_line):
         " ", "").split(",")
     return signals
 
+def find_pattern_in_text(**kvargs):
+    pattern = kvargs["pattern"]
+    key_words = kvargs["key_words"]
+    text_string = kvargs["text_string"]
+
+    signal_name = []
+    value = []
+    
+    signal_vector_iter = re.finditer(pattern,text_string)
+    for signal_vector in signal_vector_iter:
+        for key_word in key_words:
+            result = signal_vector.group(key_word)
+            if result[:-1].split(" ")[0] == "others":
+                splitted_result = result[:-1].split(" ")
+                result = "x\"" + splitted_result[-1][1:-1]*2+"\""
+            else:
+                result = result.replace(";","").replace("'","")
+            
+            if key_word == "signal_name":
+                signal_name.append(result)
+            elif key_word == "value":
+                value.append(result)
+
+    return signal_name, value
+            
+
+
 
 def find_processes(content):
     list_of_prosesses = []
     list_of_inline_processes = []
     current_process = None
-    process_started = False
-    procedure_started = False
     inside_process = False
     inside_procedure = False
     procedure_string = []
@@ -145,11 +170,12 @@ def find_processes(content):
     
     for line in content:
 
-        if "process" in line:
+        if "process" in line and "end" not in line:
             inside_process = True
             process_string.append("")
 
-        if "procedure" in line:
+
+        if "procedure" in line and "end" not in line:
             inside_procedure = True
             procedure_string.append("")
 
@@ -168,6 +194,7 @@ def find_processes(content):
 
     for idx,process in enumerate(process_string):
         process_name_pattern = re.compile(r"(?P<process_name>\w+)\s*:\s*process")
+
         if re.search(process_name_pattern,process) == None:
             process_name = "Process_"+str(idx)
             current_process = Process(process_name)
@@ -177,110 +204,30 @@ def find_processes(content):
                 process_name = p_name.group("process_name")
                 current_process = Process(process_name)
         
-        signal_pattern = re.compile(r"(?P<signal_name>\w+)\s*<=\s*")
-        signal_iter = re.finditer(signal_pattern,process)
-        for signal in signal_iter:
-            signal_name = signal.group("signal_name")
-            
+        signal_pattern = re.compile(r"(?P<signal_name>\w+)\s*<=\s*.(?P<value>.+).")
+        signal_name, value = find_pattern_in_text(pattern=signal_pattern,text_string=process,key_words=["signal_name","value"])
+        for i in range(len(signal_name)):
+            current_process.set_assigned_signal(signal_name[i],value[i])
 
+        signal_vector_pattern = re.compile(r"(?P<signal_name>\w+)\(\w*\)\s*<=\s*(?P<value>.+)")
+        signal_name, value = find_pattern_in_text(pattern=signal_vector_pattern,text_string=process,key_words=["signal_name","value"])
+        for i in range(len(signal_name)):
+            current_process.set_assigned_signal(signal_name[i],value[i])
 
+        if_input_pattern = re.compile(r"(?P<signal_name>\w+)\s*=\s+")
+        signal_name, value = find_pattern_in_text(pattern=if_input_pattern,text_string=process,key_words=["signal_name"])
+        for i in range(len(signal_name)):
+            current_process.set_input_signals(signal_name[i])
 
+        rising_edge_pattern = re.compile(r"rising_edge\((?P<signal_name>\w+)\)\s+")
+        signal_name, value = find_pattern_in_text(pattern=rising_edge_pattern,text_string=process,key_words=["signal_name"])
+        for i in range(len(signal_name)):
+            current_process.set_input_signals(signal_name[i])
 
-    
-
-        # if current_process == None:
-        #     process_started = False
-
-        
-        # if " process " in line and "end" not in line:
-        #     try:
-        #         end_process_name = line.index(":")
-        #         process_name = line[0:end_process_name].replace(" ", "").replace("\t", "")
-        #     except ValueError:
-        #         process_name = "Process_"+str(p_idx)
-        #         p_idx+=1
-            
-        #     current_process = Process(process_name)
-        #     sensitivity_signals = find_sensitivity_signals(line)
-        #     for signal in sensitivity_signals:
-        #         current_process.set_sensitivity_signal(signal)
-
-        # # Procedure detection
-        # if " procedure " in line:
-        #     inside_procedure = True
-        # if " end procedure" in line:
-        #     inside_procedure = False
-        #     procedure_started = False
-
-        # if "begin" in line:
-        #     if inside_procedure:
-        #         procedure_started = True
-        #     else:
-        #         process_started = True
-
-        # if " if " in line and process_started == True:
-        #   if_start = line.find("if")
-        #   line_splitted = line[if_start:].split(" ")
-        #   multiple_lines = []
-        #   if "and" in line_splitted or "or" in line_splitted:
-        #     split_idx = []
-        #     for idx,item in enumerate(line_splitted):
-        #       if item == "and" or item == "or":
-        #         split_idx.append(idx)
-
-
-        #     last_idx = 0
-        #     for idx in split_idx:
-
-        #       multiple_lines.append(line_splitted[last_idx+1:idx])
-        #       last_idx = idx
-        #     multiple_lines.append(line_splitted[last_idx+1:])
-
-        #   else:
-        #     multiple_lines.append(line_splitted)
-
-        #   for multiple_line_splitted in multiple_lines:
-        #     if "=" in multiple_line_splitted:
-        #       equal_idx = multiple_line_splitted.index("=")
-        #       first_signal = multiple_line_splitted[equal_idx-1].replace("(","")
-        #       second_signal = multiple_line_splitted[equal_idx+1].replace(")","")
-        #       current_process.set_input_signals(first_signal)
-        #       current_process.set_input_signals(second_signal)
-
-        #   if "rising_edge" in line:
-        #     bracket_start = line.find("(")+1
-        #     bracket_end = line.find(")")
-        #     signal = line[bracket_start:bracket_end]
-        #     current_process.set_input_signals(signal)
-
-        # if " variable " in line and current_process != None:
-        #     variable_declaration = line.split(": ")
-        #     variable_name = variable_declaration[0].split(" variable ")[1].replace(" ", "")
-        #     variable_type = variable_declaration[1].split(":=")
-        #     variable_value = None
-
-        #     if len(variable_type) > 1:
-        #         variable_value = variable_type[1].replace(" ", "")
-
-        #     current_process.set_internal_variable(variable_name, value=variable_value, variable_type=variable_type[0].replace("; ", ""))
-
-        # if " := " in line and process_started == True:
-        #     target_variable = line.split(":=")[0].replace("\t","").replace(" ", "")
-        #     target_value = line.split(":=")[1].replace("\n", "").replace(";","").replace(" ", "")
-        #     current_process.set_internal_variable(target_variable, value=target_value)
-
-        # if " <= " in line:
-        #   if process_started  or procedure_started:
-        #     target_signal = line.split("<=")[0].replace("\t","").replace(" ", "")
-        #     value = line.split("<=")[1].replace("\n", "").replace(";","").replace(" ", "")
-            
-        #     current_process.set_assigned_signal(target_signal, value)
-        #   elif not inside_procedure:
-        #     list_of_inline_processes.append(define_inline_process(line))
-
-        # if "end process" in line:
-        #     list_of_prosesses.append(current_process)
-        #     current_process = None
+        list_of_prosesses.append(current_process)
+        # print("\n"+current_process.get_process_name())
+        # print(current_process.get_input_signals())
+        # print(current_process.get_assigned_signals())
 
     list_of_prosesses = list_of_prosesses+list_of_inline_processes
     return list_of_prosesses
@@ -331,10 +278,9 @@ def define_inline_process(line):
 def remove_comments(content):
     cleaned_content = []
     for line in content:
-        line = line.replace("(", "\(").replace(")", "\)").replace("\n","")
+        # line = line.replace("(", "(").replace(")", ")").replace("\n","")
         if re.match("^\s*--",line) == None:
-            cleaned_content.append(line)
-    
+            cleaned_content.append(line)    
     return cleaned_content
 
 
@@ -406,7 +352,7 @@ def main(filename):
 
     entity = find_internal_signals(file_content,entity)
     processes = find_processes(file_content)
-    # print_all(entity,processes)
+    print_all(entity,processes)
     block_list = sort_system(entity,processes)
     if block_list != 1:
       draw_diagram(entity.get_name(),block_list,None)
