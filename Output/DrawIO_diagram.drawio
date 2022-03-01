@@ -6,7 +6,7 @@
           <mxCell id="1" parent="0" />
         <object id="INPUT" label="INPUT">
       <mxCell style="rounded=1" vertex="1" parent="1">
-          <mxGeometry x="0" y="0" width="120" height="450" as="geometry" />
+          <mxGeometry x="0" y="0" width="120" height="600" as="geometry" />
       </mxCell>
     </object><object id="p_read_data" label="p_read_data">
       <mxCell style="rounded=1" vertex="1" parent="1">
@@ -20,48 +20,68 @@
       <mxCell style="rounded=1" vertex="1" parent="1">
           <mxGeometry x="600" y="300" width="120" height="100" as="geometry" />
       </mxCell>
+    </object><object id="tx_data" label="tx_data">
+      <mxCell style="shape=mxgraph.electrical.logic_gates.buffer2;align=left;spacingLeft=25;" vertex="1" parent="1">
+          <mxGeometry x="800" y="450" width="120" height="100" as="geometry" />
+      </mxCell>
     </object><object id="OUTPUT" label="OUTPUT">
       <mxCell style="rounded=1" vertex="1" parent="1">
-          <mxGeometry x="800" y="0" width="120" height="450" as="geometry" />
+          <mxGeometry x="1000" y="0" width="120" height="600" as="geometry" />
       </mxCell>
-    </object><object id="6d18d2fb8f3bf7a9df571d7597c5fed6" label="tx_vld">
+    </object><object id="35476664f4c8e8013f505cbff5c96606" label="sync_bit_array" source="p_sync_bit" target="p_read_data">
+      <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" edge="1" parent="1" source="p_sync_bit" target="p_read_data">
+          <mxGeometry relative="1" as="geometry" />
+      </mxCell>
+    </object><object id="73ad87a4559a81c4c67b8c22c5b82c78" label="tx_vld" source="p_write_data" target="p_read_data">
       <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" edge="1" parent="1" source="p_write_data" target="p_read_data">
           <mxGeometry relative="1" as="geometry" />
       </mxCell>
-    </object><object id="8e6b9841ef404fedcd14ddc20bb2e208" label="arst_in">
-      <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" edge="1" parent="1" source="INPUT" target="p_read_data">
+    </object><object id="188d73f2e9b1e5c1cb0e12cac0cc1e3b" label="tx_vld" source="p_write_data" target="tx_data">
+      <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" edge="1" parent="1" source="p_write_data" target="tx_data">
           <mxGeometry relative="1" as="geometry" />
       </mxCell>
-    </object><object id="dcee874fa8cd2fb557a8bb727315e4b5" label="rx_vld">
+    </object><object id="b259e6ed7c87e034f02b6a90856ee4c7" label="rx_data" source="INPUT" target="p_read_data">
       <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" edge="1" parent="1" source="INPUT" target="p_read_data">
           <mxGeometry relative="1" as="geometry" />
       </mxCell>
-    </object><object id="adf43e829aa440e807aed769b24bcd6b" label="clk_in">
+    </object><object id="a061589344c14992d88e1294e3707d77" label="arst_in" source="INPUT" target="p_read_data">
+      <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" edge="1" parent="1" source="INPUT" target="p_read_data">
+          <mxGeometry relative="1" as="geometry" />
+      </mxCell>
+    </object><object id="61eefe7e04cb2c9ca26bf2dbfeaa8a7f" label="rx_vld" source="INPUT" target="p_read_data">
+      <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" edge="1" parent="1" source="INPUT" target="p_read_data">
+          <mxGeometry relative="1" as="geometry" />
+      </mxCell>
+    </object><object id="2e54d365597e520413619daff7893e73" label="clk_in" source="INPUT" target="p_read_data">
       <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" edge="1" parent="1" source="INPUT" target="p_read_data">
           <mxGeometry relative="1" as="geometry" />
       </mxCell>
-    </object><object id="c236d2f50f3d4b99f26a0190998e6cec" label="clk_out">
+    </object><object id="5f9f773ecc1566f4fbdf3dbb42a446da" label="clk_out" source="INPUT" target="p_sync_bit">
       <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" edge="1" parent="1" source="INPUT" target="p_sync_bit">
           <mxGeometry relative="1" as="geometry" />
       </mxCell>
-    </object><object id="c6dd7ac7aee64f0b21c9e0b8f235ff9f" label="arst_out">
+    </object><object id="4a13f90ebe69df92a74653325dbbe658" label="arst_out" source="INPUT" target="p_write_data">
       <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" edge="1" parent="1" source="INPUT" target="p_write_data">
           <mxGeometry relative="1" as="geometry" />
       </mxCell>
-    </object><object id="f7a813671450baca9c61b16e4c3c57dd" label="tx_rdy">
+    </object><object id="f34797625bf27776e0e5e2f25c5ce721" label="tx_rdy" source="INPUT" target="p_write_data">
       <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" edge="1" parent="1" source="INPUT" target="p_write_data">
           <mxGeometry relative="1" as="geometry" />
       </mxCell>
-    </object><object id="8adb55b1152fa228a5e84102682399fc" label="clk_out">
+    </object><object id="f4fcc656fc79a9a352094d0522ded07d" label="clk_out" source="INPUT" target="p_write_data">
       <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" edge="1" parent="1" source="INPUT" target="p_write_data">
           <mxGeometry relative="1" as="geometry" />
       </mxCell>
-    </object><object id="7b0516cbf800ee37598b41479a642a1a" label="rx_rdy">
+    </object><object id="b61d1f041ac1793f05241d8adb87734d" label="rx_rdy" source="p_read_data" target="OUTPUT">
       <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" edge="1" parent="1" source="p_read_data" target="OUTPUT">
           <mxGeometry relative="1" as="geometry" />
       </mxCell>
-    </object><object id="33e85f4a7996121611a346f8242c9bce" label="tx_vld">
+    </object><object id="0ba64561f5f5995079676c445463bd28" label="tx_vld" source="p_write_data" target="OUTPUT">
       <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" edge="1" parent="1" source="p_write_data" target="OUTPUT">
+          <mxGeometry relative="1" as="geometry" />
+      </mxCell>
+    </object><object id="4255aa76e83444bbc371640bd4827e12" label="tx_data" source="tx_data" target="OUTPUT">
+      <mxCell style="endArrow=classic;endFill=1;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;strokeWidth=2;" edge="1" parent="1" source="tx_data" target="OUTPUT">
           <mxGeometry relative="1" as="geometry" />
       </mxCell>
     </object></root>

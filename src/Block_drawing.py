@@ -68,7 +68,6 @@ def draw_diagram(diagram_name, blocks, wires):
     for jdx, another_block in enumerate(internal_blocks):
       diagram = draw_wire(diagram,OUTPUT_BLOCK,another_block,signal)
 
-  # diagram.layout(algo="fr")
   diagram.dump_file(filename="DrawIO_diagram.drawio")
   return 0
 

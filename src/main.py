@@ -86,8 +86,8 @@ def find_entity_with_signals(content):
             inside_entity_declaration = False
             break
     
-    input_compiled = re.compile(r"(?P<input>\w+)\s*:\s*in\s(?P<type>\w+)") 
-    output_compiled = re.compile(r"(?P<output>\w+)\s*:\s*out\s(?P<type>\w+)") 
+    input_compiled = re.compile(r"(?P<input>\w+)\s*:\s*in\s(?P<type>.+)") 
+    output_compiled = re.compile(r"(?P<output>\w+)\s*:\s*out\s(?P<type>.+)") 
 
     input_signals = re.finditer(input_compiled,entity_string)
     output_signals = re.finditer(output_compiled,entity_string)
@@ -115,10 +115,11 @@ def find_internal_signals(content,entity = None):
         if "end architecture" in line:
             break
             
-    signal_pattern = re.compile(r"\s*signal\s+(?P<signal_name>\w+)\s+:\s+(?P<signal_type>\w+)")
+    signal_pattern = re.compile(r"\s*signal\s+(?P<signal_name>\w+)\s+:\s+(?P<signal_type>.+)")
     signal_declaration = re.finditer(signal_pattern,architecture_string)
     for signal in signal_declaration:
         signal_name,signal_type = signal.group("signal_name","signal_type")
+        signal_type = signal_type.split(":=")[0]
         entity.set_internal_signals(internal_signal_name=signal_name, internal_signal_type=signal_type)
     return entity
 
@@ -140,22 +141,23 @@ def find_pattern_in_text(**kvargs):
     signal_vector_iter = re.finditer(pattern,text_string)
     for signal_vector in signal_vector_iter:
         for key_word in key_words:
-            result = signal_vector.group(key_word)
-            if result[:-1].split(" ")[0] == "others":
-                splitted_result = result[:-1].split(" ")
-                result = "x\"" + splitted_result[-1][1:-1]*2+"\""
-            else:
-                result = result.replace(";","").replace("'","")
             
+            result = signal_vector.group(key_word)
+            
+            if "others" in result:
+                result = result.replace("(","").replace(")","").replace("'","")
+                splitted_result = result.split(" ")
+                result = "x\"" + splitted_result[-1]*2+"\""
+            else:
+                result = result.replace("'","")
+
             if key_word == "signal_name":
                 signal_name.append(result)
             elif key_word == "value":
                 value.append(result)
-
+        
     return signal_name, value
             
-
-
 
 def find_processes(content):
     list_of_prosesses = []
@@ -165,6 +167,7 @@ def find_processes(content):
     inside_procedure = False
     procedure_string = []
     process_string = []
+    rest_of_code = ""
     p_idx = 0
     procedure_idx = 0
     
@@ -183,6 +186,8 @@ def find_processes(content):
             procedure_string[procedure_idx] += line
         elif inside_process:    
             process_string[p_idx] += line
+        else:
+            rest_of_code += line
 
         if "end procedure" in line:
             inside_procedure = False
@@ -203,22 +208,36 @@ def find_processes(content):
             for p_name in process_name_iter:
                 process_name = p_name.group("process_name")
                 current_process = Process(process_name)
-        
-        signal_pattern = re.compile(r"(?P<signal_name>\w+)\s*<=\s*.(?P<value>.+).")
+
+        # Find Sensitivity signals
+        signal_pattern = re.compile(r"(process)\s*\((?P<signal_name>.*)\)")
+        signal_name, value = find_pattern_in_text(pattern=signal_pattern,text_string=process,key_words=["signal_name"])
+        signal_name = signal_name[0].replace(" ","").split(",")
+        for i in range(len(signal_name)):
+            current_process.set_sensitivity_signal(signal_name[i])
+
+        #Find assigned signals
+        signal_pattern = re.compile(r"(?P<signal_name>\w+)\s*<=\s*(?P<value>.+)")
         signal_name, value = find_pattern_in_text(pattern=signal_pattern,text_string=process,key_words=["signal_name","value"])
         for i in range(len(signal_name)):
             current_process.set_assigned_signal(signal_name[i],value[i])
 
+        #Find assigned vectors
         signal_vector_pattern = re.compile(r"(?P<signal_name>\w+)\(\w*\)\s*<=\s*(?P<value>.+)")
         signal_name, value = find_pattern_in_text(pattern=signal_vector_pattern,text_string=process,key_words=["signal_name","value"])
         for i in range(len(signal_name)):
+            value[i] = value[i].split("(")[0].replace("not ","")
             current_process.set_assigned_signal(signal_name[i],value[i])
+            if value[i][:2] != "x'":
+                current_process.set_input_signals(value[i])
 
+        #Find input_signals
         if_input_pattern = re.compile(r"(?P<signal_name>\w+)\s*=\s+")
         signal_name, value = find_pattern_in_text(pattern=if_input_pattern,text_string=process,key_words=["signal_name"])
         for i in range(len(signal_name)):
             current_process.set_input_signals(signal_name[i])
 
+        #Find input_signals
         rising_edge_pattern = re.compile(r"rising_edge\((?P<signal_name>\w+)\)\s+")
         signal_name, value = find_pattern_in_text(pattern=rising_edge_pattern,text_string=process,key_words=["signal_name"])
         for i in range(len(signal_name)):
@@ -229,58 +248,86 @@ def find_processes(content):
         # print(current_process.get_input_signals())
         # print(current_process.get_assigned_signals())
 
+    for line in rest_of_code.split("\n"):
+        if "<=" in line:
+            list_of_inline_processes.append(define_inline_process(line))
+
     list_of_prosesses = list_of_prosesses+list_of_inline_processes
     return list_of_prosesses
 
+def find_components(content):
+    list_of_components = []
+    src_code = " ".join(content)
+
+    component_pattern = re.compile(r"\w+\s*:\s*entity[\s\w\n=>.,()]+\)")
+    components = component_pattern.findall(src_code)
+    for component_string in components:
+        list_of_components.append(parse_component(component_string))
+
+    return list_of_components
+
+def parse_component(component_string):
+    name_pattern = re.compile(r"(?P<comp_name>\w+)\s*:\s*")
+    comp_name = name_pattern.match(component_string).group("comp_name")
+    component = Component(comp_name)
+    port_pattern = re.compile(r"(?P<signal>[\w\_]+)\s*=>\s*(?P<value>[\w\_]+)")
+    if "generic map" in component_string:
+        generic_start = component_string.find("(")
+        generic_end = component_string.find(")")
+
+        generic_string = component_string[generic_start+1:generic_end].replace("\n","").replace(" ","")
+        generic_constant = port_pattern.findall(generic_string)
+        for generic_touple in generic_constant:
+            component.add_generic(generic=generic_touple[0],value=generic_touple[1])
+
+    component_string = component_string[generic_end+1:]
+    if "port map" in component_string:
+        port_start = component_string.find("(")
+        port_string = component_string[port_start+1:]
+        
+        port_signals = port_pattern.findall(port_string)
+        for port_touple in port_signals:
+            component.add_port(port_name=port_touple[0],value=port_touple[1])
+
+    # print(component.get_name())
+    # print(component.get_generics())
+    # print(component.get_port())
+    return component
+
 def pop_elements_from_list(list_to_pop, item_to_pop):
-  popped_list = []
-  for idx,item in enumerate(list_to_pop):
-    if item != item_to_pop:
-      popped_list.append(item)
-    
-  return popped_list
+    popped_list = []
+    for idx,item in enumerate(list_to_pop):
+        if item != item_to_pop:
+            popped_list.append(item)
+        
+    return popped_list
 
 def define_inline_process(line):
-  target_signal = line.split("<=")[0].replace("\t","").replace(" ", "")
-  value_list = line.split("<=")[1].replace("\n", "").replace(";","").split(" ")
-  
-  value_list = pop_elements_from_list(value_list,'')
-  
-  buffer_type = "buffer"
-  value = None
-  second_value = None
-  trigger_signal = None
-  
-  
-  if len(value_list)<4:
-    if "not" in value_list:
-      buffer_type = "not"
-    value = value_list[-1]
-  else:
-    if "when" in value_list:
-      value = value_list[0]
-      second_value = value_list[-1]
-      trigger_signal = value_list[2]
-
-
-  inline_process = Inline_process(target_signal)  
-  inline_process.set_buffer_type(gate_type=buffer_type)
-  if value != None:
+    pattern = re.compile(r"(?P<target_signal>\w+)\s*<=\s*(?P<value>\w+)\s*(?P<condition>.+)")
+    line_iter = re.finditer(pattern, line)
+    
+    for item in line_iter:
+        target_signal,value,condition = item.group("target_signal","value","condition")
+        exception = condition.split("else")[1].replace("(","").replace(")","").replace("'","").split(" ")
+        condition = condition.split("else")[0]
+        exception = "x\"" + exception[-1]*2+"\""
+        condition = condition.replace("(","").replace(")","").replace("'","").split(" ")[1]
+    
+    inline_process = Inline_process(target_signal)  
     inline_process.set_assigned_signal(target_signal,value)
-  if second_value != None:
-    inline_process.set_assigned_signal(target_signal,second_value,)
-  if trigger_signal != None:
-    inline_process.set_assigned_signal(target_signal,trigger_signal)
+    inline_process.set_assigned_signal(target_signal,exception)
+    inline_process.set_input_signals(condition)
 
-
-  return inline_process
+    return inline_process
 
 def remove_comments(content):
     cleaned_content = []
     for line in content:
         # line = line.replace("(", "(").replace(")", ")").replace("\n","")
+        
+        line = line.replace(";","")
         if re.match("^\s*--",line) == None:
-            cleaned_content.append(line)    
+            cleaned_content.append(line)
     return cleaned_content
 
 
@@ -320,6 +367,11 @@ def print_all(entity,processes):
             print("   Internal Variables:")
             for internal_variable in process.get_internal_variables():
                 print("    ", internal_variable, ":", process.get_internal_variables()[internal_variable])
+        
+        if len(process.get_input_signals()) > 0:
+            print("   Input Signals:  ")
+            for input_signal in process.get_input_signals():
+                print("    ", input_signal)
 
         print("   Assigned Signals:  ")
         for assigned_signal in process.get_assigned_signals():
@@ -352,7 +404,8 @@ def main(filename):
 
     entity = find_internal_signals(file_content,entity)
     processes = find_processes(file_content)
-    print_all(entity,processes)
+    components = find_components(file_content)
+    # print_all(entity,processes)
     block_list = sort_system(entity,processes)
     if block_list != 1:
       draw_diagram(entity.get_name(),block_list,None)
